@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>jQuery demo</title>
+    </head>
+    <body>
+        <div>Tell me your name and I'll tell you what it is backwards.</div>
+        <input type="text" class="textBox" value="Name"/>
+        <button>Enter</button>
+        <div id="result"></div>
+        
+        <script src="/jquery.js"></script>
+        <script>
+            $(document).ready(function () {
+                $("button").click(function (event){
+                    //alert("Hello!");
+                    $.get('/test/one', 'key=' + $(".textBox").val(), function (data) {
+                        $('#result').html('Your name backwards is: ' + data);
+                        //alert('Load was performed.');
+                    });
+
+                    event.preventDefault();
+                });
+            });
+        </script>
+    </body>
+</html>

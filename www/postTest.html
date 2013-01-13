@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>jQuery demo</title>
+    </head>
+    <body>
+        <div>Tell me two names to send to the server.</div>
+        <input type="text" class="textBox1" value="Name1"/>
+        <input type="text" class="textBox2" value="Name2"/>
+        <button>Enter</button>
+        <div id="result"></div>
+        
+        <script src="/jquery.js"></script>
+        <script>
+            $(document).ready(function () {
+                $("button").click(function (event){
+                    //alert("Hello!");
+                    $.post('/test/three', 'person1=' + $(".textBox1").val() + '&person2=' + $(".textBox2").val(), function (data) {
+                        $('#result').html('Server\'s response: ' + data);
+                        //alert('Load was performed.');
+                    });
+
+                    event.preventDefault();
+                });
+            });
+        </script>
+    </body>
+</html>
