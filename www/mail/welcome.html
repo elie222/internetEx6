@@ -2,55 +2,9 @@
 <html>
 <head>
     <title>Mail Application</title>
+    <link rel="stylesheet" type="text/css" href="/mail/stylesheet.css" />
 </head>
 <body>
-
-<style type="text/css">
-
-
-
-    body
-    {
-        background-color: #50baff;
-    }
-    #container
-    {
-        border-style:double;
-        border-color:orange;
-        border-width: 8px;
-
-        background-color: #236dff;
-        color: white;
-
-        font-family: cursive;
-
-        padding: 10px;
-        text-align: center;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 400px;
-        height: 300px;
-        margin-top: -150px;
-        margin-left: -200px;
-
-    }
-
-    table.login
-    {
-        margin-left: 80px;
-        border-width: 1px;
-        border-style: groove;
-        text-align: left;
-    }
-
-    #button
-    {
-
-    }
-
-</style>
-
 
 <div id="container">
     <br />
@@ -59,7 +13,7 @@
     </span>
     <br />
     <br />
-    Sign in:
+<!--     Sign in:
     <br />
     <br />
     <table class="login">
@@ -70,14 +24,30 @@
             <td>Password: </td><td><input type='password'/></td>
         </tr>
    </table>
-    <input type="button" id="button" value="Log in"/>
+    <input type="button" id="button" value="Log in"/> -->
 
-    <form name="loginForm" action="login" method="POST">
-        Username: <input type="text" name="username"><br>
-        Password: <input type="password" name="password"><br>
-        <input type="submit" value="Log in">
-    </form>
+    <div id="loginBox" >
+        <form name="loginForm" action="login" method="POST">
+            Username: <input type="text" name="username"><br>
+            Password: <input type="password" name="password"><br>
+            <input type="submit" value="Log in">
+        </form>
+        <input type="button" value="Go To Register" onclick="buttonPushed('goToRegister');"/>
+    </div>
+
+    <div id="registerBox" style="display: none;">
+        <form name="registerForm" action="register" method="POST">
+            Username: <input type="text" name="username"><br>
+            Password: <input type="password" name="password"><br>
+            First Name: <input type="text" name="firstname"><br>
+            Surname: <input type="text" name="surname"><br>
+            Age: <input type="text" name="age"><br>
+            <input type="submit" value="Register">
+        </form>
+        <input type="button" value="Go To Login" onclick="buttonPushed('goToLogin');"/>
+    </div>
 </div>
 
+<script type="text/javascript" src="virtualPageSwitcher.js"></script>
 </body>
 </html>
