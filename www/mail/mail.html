@@ -5,6 +5,24 @@
     <link rel="stylesheet" type="text/css" href="/mail/stylesheet.css" />
 </head>
 <body>
-	Hello! You've managed to login!
+	<div id="container">
+		<div>Hello! You've managed to login!</div>
+		<button id="composeButton">Compose New Email</button>
+	    <form name="loginForm" action="login" method="POST">
+	        From: <input type="text" name="from"><br>
+	        To: <input type="text" name="to"><br>
+	        Subject: <input type="text" name="subject"><br>
+	        Body: <textarea name="body"></textarea><br>
+	        Arrival Date: <input type="text" name="arrivalDate"><br>
+	        <input type="submit" value="Send">
+	    </form>
+		<div id="receivedEmails">
+			Received Emails:
+		</div>
+	</div>
+
+	<script type="text/javascript">
+
+	</script>
 </body>
 </html>

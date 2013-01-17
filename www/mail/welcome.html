@@ -46,8 +46,22 @@
         </form>
         <input type="button" value="Go To Login" onclick="buttonPushed('goToLogin');"/>
     </div>
+    <div id="errorMessage"></div><!--TODO show an error message if login details are invalid.-->
 </div>
 
-<script type="text/javascript" src="virtualPageSwitcher.js"></script>
+<script type="text/javascript">
+    function buttonPushed(button) {
+        console.log('HERE');
+        if (button === 'goToRegister') {
+            document.getElementById("loginBox").style.display="none";
+            document.getElementById("registerBox").style.display="inline";
+        } else if (button === 'goToLogin') {
+            document.getElementById("registerBox").style.display="none";
+            document.getElementById("loginBox").style.display="inline";
+        } else {
+            console.log('not a button name');
+        }
+    }
+</script>
 </body>
 </html>
