@@ -45,6 +45,8 @@ function createHTTPServer(pResourceMap, pRootFolder) {
         var socketNum = 0;
         var shuttingDown = false;
 
+        var publicMemory = {};
+
         var CONTENT_TYPES = {
             "js" : "application/javascript",
             "txt" : "text/plain",
@@ -188,6 +190,10 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                         }
                         
                         this.parameters = querystring.parse(search);
+
+                        this.getPublicMemory = function () {
+                            return that.publicMemory;
+                        };
 
                         // private methods //
                         /*
@@ -411,9 +417,10 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                     };
                 }
 
+                //THIS IS THE OLD WAY OF CREATING PARAMS. CHANGED FOR EX6. (SEE BELOW).
                 //example of what this method will receive: ('a/b/c/', 'a/:x/:y/')
                 //('a/b/c/d/', 'a/:x/c/:y/') is also considered valid and we handle it well. 
-                function createParameters(requestURI, pathFormat) {
+                function createParametersEx5(requestURI, pathFormat) {
                     // console.log('function createParameters(requestURI, pathFormat)');
                     // console.log('requestURI: ' + requestURI);
                     // console.log('pathFormat: ' + pathFormat);
@@ -459,6 +466,67 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                             //console.log('found :');
                             parameters[i] = splitRequestURI[j];
                             ++i;
+                        }
+                    }
+
+                    // console.log('--printing parameters:');
+                    // for (var property in parameters) {
+                    //     console.log(property + ':' + parameters[property]);
+                    // }
+
+                    return parameters;
+                }
+
+                //example of what this method will receive: ('a/b/c/', 'a/:x/:y/')
+                //('a/b/c/d/', 'a/:x/c/:y/') is also considered valid and we handle it well. 
+                function createParameters(requestURI, pathFormat) {
+                    // console.log('function createParameters(requestURI, pathFormat)');
+                    // console.log('requestURI: ' + requestURI);
+                    // console.log('pathFormat: ' + pathFormat);
+
+                    var parameters = {};
+                    var splitPathFormat, splitRequestURI;
+
+                    if (pathFormat ==='') {
+                        return [];
+                    }
+
+                    //remove leading and trailing whitespace
+                    pathFormat = pathFormat.toString().trim();
+                    requestURI = requestURI.toString().trim();
+
+                    if (pathFormat.charAt(0)==='/') {
+                        pathFormat = pathFormat.slice(1);//remove the / from the beginning of the string
+                    }
+                    if (requestURI.charAt(0)==='/') {
+                        requestURI = requestURI.slice(1);//remove the / from the beginning of the string
+                    }
+
+                    if (pathFormat.charAt(pathFormat.length-1)==='/') {
+                        pathFormat = pathFormat.slice(0, -1);//remove the / from the end of the string
+                    }
+                    if (requestURI.charAt(requestURI.length-1)==='/') {
+                        requestURI = requestURI.slice(0, -1);//remove the / from the end of the string
+                    }
+
+                    //console.log('pathFormat: ' + pathFormat);
+                    //console.log('requestURI: ' + requestURI);
+
+                    splitPathFormat = pathFormat.split('/');
+                    splitRequestURI = requestURI.split('/');
+
+                    //console.log('splitPathFormat.length: ' + splitPathFormat.length);
+                    //console.log('splitRequestURI.length: ' + splitRequestURI.length);
+
+                    for (var ; ;) {
+
+                    }
+
+                    for (var j=0; j<splitPathFormat.length; j++) {
+                        //console.log('splitPathFormat[j]: ' + splitPathFormat[j]);
+                        if (splitPathFormat[j].trim().charAt(0)===':') {
+                            //console.log('found :');
+                            parameters[splitPathFormat[j].trim().slice(1)] = splitRequestURI[j];
                         }
                     }
 
