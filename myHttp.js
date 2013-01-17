@@ -45,7 +45,9 @@ function createHTTPServer(pResourceMap, pRootFolder) {
         var socketNum = 0;
         var shuttingDown = false;
 
-        var publicMemory = {};
+        var publicMemory = {
+            users: {}
+        };
 
         var CONTENT_TYPES = {
             "js" : "application/javascript",
@@ -194,7 +196,7 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                         this.parameters = querystring.parse(search);
 
                         this.getPublicMemory = function () {
-                            return that.publicMemory;
+                            return publicMemory;
                         };
 
                         // private methods //
@@ -397,6 +399,12 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                             });
                         };
 
+                        this.sendStaticPage = function (page, callback) {
+                            parsedData = {};
+                            parsedData.RequestURI = page;
+                            staticResponse(parsedData, callback);
+                        }
+
                         this.addCookie = function (cookie) {
                             // TODO: what happens if the user uses a Set-Cookie header?
                             if(!cookie || !cookie['key']) {
@@ -416,19 +424,6 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                             }
                            delete  cookies[cookieKey] ;
                         };
-
-                        // this.mailLogin = function (username, password) {
-                        //     console.log('function mail login');
-                        //     console.log('username: ' + username);
-                        //     console.log('password: ' + password);
-                        //     // if () {
-                        //     //     that.
-                        //     // } else {
-
-                        //     // }
-                        //     //data = {RequestURI: ''};
-                        //     //respond(data);
-                        // };
                     };
                 }
 
@@ -499,18 +494,6 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                     var parameters = null;
                     var requestMapKey = '';
 
-                    // reset timeout
-                    //socket.setTimeout(0);
-                   // isTimeout = false;
-                    /*
-                    console.log('setting timeout ('+socketId+') at: ' + new Date().getTime());
-                    socket.setTimeout(settings.LAST_REQUEST_TIMEOUT_SEC * 1000, function() {
-                        isTimeout = true;
-                        onSocketTimeout();
-                    });
-                    */
-                    // executed upon a successful request parsing...
-
                     isKeepAlive = !((parsedData.httpVersion === '1.0' && parsedData['connection'].toString().toLowerCase() === 'keep-alive') || parsedData['connection'] === 'close');
 
                     //console.log('isKeepAlive = ' + isKeepAlive);
@@ -522,7 +505,7 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                         return;
                     }
 
-                    if (parsedData.RequestURI === '/mail/login') {
+/*                    if (parsedData.RequestURI === '/mail/login') {
                         //check username and password. else return incorrect username/password message
                         request = createRequestObject(parsedData);
                         console.log('HERE!');
@@ -539,6 +522,27 @@ function createHTTPServer(pResourceMap, pRootFolder) {
 
                         return;
                     }
+
+                    if (parsedData.RequestURI === '/mail/register') {
+                        //check username and password. else return incorrect username/password message
+                        request = createRequestObject(parsedData);
+                        console.log('HERE!');
+                        console.log('username: ' + request.parameters.username);
+                        console.log('password: ' + request.parameters.password);
+                        console.log('firstname: ' + request.parameters.firstname);
+                        console.log('surname: ' + request.parameters.surname);
+                        console.log('age: ' + request.parameters.age);
+
+                        //TODO change this
+                        if (true) {
+                            parsedData.RequestURI = '/mail/mail.html';
+                            staticResponse(parsedData, callback);
+                        } else {
+
+                        }
+
+                        return;
+                    }*/
 
                     function matches(key, requestURI) {
                         //remove leading and trailing whitespace
