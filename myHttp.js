@@ -158,9 +158,11 @@ function createHTTPServer(pResourceMap, pRootFolder) {
 
                 function createRequestObject(parsedData) {
                     return new function() {
+                        //console.log(parsedData);
+
                         var thatServer = that;
                         var thatRequest = this;
-                        var paramsRegex = new RegExp('(\\w+\\=\\w+)(\\&?(\\w+\\=\\w+))*');
+                        var paramsRegex = new RegExp('(\\w+\\=\\w*)(\\&?(\\w+\\=\\w*))*');
                         //var session = getActiveSession();
                         var search = '';
 
@@ -188,7 +190,7 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                         } else {
                             console.log('ERROR! Method must be GET or POST');//should never reach here
                         }
-                        
+
                         this.parameters = querystring.parse(search);
 
                         this.getPublicMemory = function () {
@@ -350,11 +352,11 @@ function createHTTPServer(pResourceMap, pRootFolder) {
 
                         // privileged methods //
 
-                        this.write = function(s) {
+                        this.write = function (s) {
                             content += s;
                         };
 
-                        this.end = function(s) {
+                        this.end = function (s) {
                             var sessionExpiration = new Date();
 
                             //console.log('Ending response...');
@@ -395,7 +397,7 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                             });
                         };
 
-                        this.addCookie = function(cookie) {
+                        this.addCookie = function (cookie) {
                             // TODO: what happens if the user uses a Set-Cookie header?
                             if(!cookie || !cookie['key']) {
                                 throw new Error('The argument is not a valid cookie object');
@@ -408,73 +410,26 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                             //console.log('cookies size is: ' + cookies.length);
                         };
 
-                        this.deleteCookie = function(cookieKey) {
+                        this.deleteCookie = function (cookieKey) {
                             if(!cookieKey) {
                                 throw new Error('The argument is not a valid cookie object');
                             }
                            delete  cookies[cookieKey] ;
                         };
+
+                        // this.mailLogin = function (username, password) {
+                        //     console.log('function mail login');
+                        //     console.log('username: ' + username);
+                        //     console.log('password: ' + password);
+                        //     // if () {
+                        //     //     that.
+                        //     // } else {
+
+                        //     // }
+                        //     //data = {RequestURI: ''};
+                        //     //respond(data);
+                        // };
                     };
-                }
-
-                //THIS IS THE OLD WAY OF CREATING PARAMS. CHANGED FOR EX6. (SEE BELOW).
-                //example of what this method will receive: ('a/b/c/', 'a/:x/:y/')
-                //('a/b/c/d/', 'a/:x/c/:y/') is also considered valid and we handle it well. 
-                function createParametersEx5(requestURI, pathFormat) {
-                    // console.log('function createParameters(requestURI, pathFormat)');
-                    // console.log('requestURI: ' + requestURI);
-                    // console.log('pathFormat: ' + pathFormat);
-
-                    var parameters = [];
-                    var i = 0;
-                    var splitPathFormat, splitRequestURI;
-
-                    if (pathFormat ==='') {
-                        return [];
-                    }
-
-                    //remove leading and trailing whitespace
-                    pathFormat = pathFormat.toString().trim();
-                    requestURI = requestURI.toString().trim();
-
-                    if (pathFormat.charAt(0)==='/') {
-                        pathFormat = pathFormat.slice(1);//remove the / from the beginning of the string
-                    }
-                    if (requestURI.charAt(0)==='/') {
-                        requestURI = requestURI.slice(1);//remove the / from the beginning of the string
-                    }
-
-                    if (pathFormat.charAt(pathFormat.length-1)==='/') {
-                        pathFormat = pathFormat.slice(0, -1);//remove the / from the end of the string
-                    }
-                    if (requestURI.charAt(requestURI.length-1)==='/') {
-                        requestURI = requestURI.slice(0, -1);//remove the / from the end of the string
-                    }
-
-                    //console.log('pathFormat: ' + pathFormat);
-                    //console.log('requestURI: ' + requestURI);
-
-                    splitPathFormat = pathFormat.split('/');
-                    splitRequestURI = requestURI.split('/');
-
-                    //console.log('splitPathFormat.length: ' + splitPathFormat.length);
-                    //console.log('splitRequestURI.length: ' + splitRequestURI.length);
-
-                    for (var j=0; j<splitPathFormat.length; j++) {
-                        //console.log('splitPathFormat[j]: ' + splitPathFormat[j]);
-                        if (splitPathFormat[j].trim().charAt(0)===':') {
-                            //console.log('found :');
-                            parameters[i] = splitRequestURI[j];
-                            ++i;
-                        }
-                    }
-
-                    // console.log('--printing parameters:');
-                    // for (var property in parameters) {
-                    //     console.log(property + ':' + parameters[property]);
-                    // }
-
-                    return parameters;
                 }
 
                 //example of what this method will receive: ('a/b/c/', 'a/:x/:y/')
@@ -517,10 +472,6 @@ function createHTTPServer(pResourceMap, pRootFolder) {
 
                     //console.log('splitPathFormat.length: ' + splitPathFormat.length);
                     //console.log('splitRequestURI.length: ' + splitRequestURI.length);
-
-                    for (var ; ;) {
-
-                    }
 
                     for (var j=0; j<splitPathFormat.length; j++) {
                         //console.log('splitPathFormat[j]: ' + splitPathFormat[j]);
@@ -566,8 +517,26 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                     //console.log('parsedData.RequestURI: ' + parsedData.RequestURI);
 
                     // TODO: add the status event to the requestMap (both to POST and GET)
-                    if(parsedData.RequestURI === '/status') {
+                    if (parsedData.RequestURI === '/status') {
                          writeStatus(callback);
+                        return;
+                    }
+
+                    if (parsedData.RequestURI === '/mail/login') {
+                        //check username and password. else return incorrect username/password message
+                        request = createRequestObject(parsedData);
+                        console.log('HERE!');
+                        console.log('username: ' + request.parameters.username);
+                        console.log('password: ' + request.parameters.password);
+
+                        //TODO change this
+                        if (true) {
+                            parsedData.RequestURI = '/mail/mail.html';
+                            staticResponse(parsedData, callback);
+                        } else {
+
+                        }
+
                         return;
                     }
 
@@ -667,6 +636,10 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                         return;
                     }
 
+                    staticResponse(parsedData, callback);
+                }
+
+                function staticResponse(parsedData, callback) {
                     //console.log('Num of current requests:  '+ numOfCurrentRequests);
                     fileType = '';
                     requestedFile = (!resourceMap[parsedData.RequestURI]) ? parsedData.RequestURI : resourceMap[parsedData.RequestURI];
@@ -1237,7 +1210,6 @@ function createHTTPServer(pResourceMap, pRootFolder) {
             finally {
                 shuttingDown = false;
             }
-
         }
 
         this.status = function () {

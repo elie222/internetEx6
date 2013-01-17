@@ -56,8 +56,8 @@ var callbackObj2 = {call: function (request, response, parameters) {
         console.log(property + ': ' + request.parameters[property]);
     }
 
-    response.write('<html><body><h1>' + parameters[0]);
-    response.write(' says hi to ' + parameters[1] + '</h1>');
+    response.write('<html><body><h1>' + parameters['person1']);
+    response.write(' says hi to ' + parameters['person2'] + '</h1>');
     response.end('</body></html>');
 }
 };
@@ -68,7 +68,7 @@ var callbackObj2 = {call: function (request, response, parameters) {
 // Tests that we correctly receive the request parameters of a POST request. Same test as
 // above, except that person1 and person 2 are now taken from the POST body instead of the url. Uses 
 // jQuery to send the post request. Also, AJAX. It's basically a combination of tests one and two that
-// tests POST reuqests.
+// tests POST requests.
 //======================================================================================================
 var callbackObj3 = {call: function (request, response, parameters) {
     console.log('---------TEST THREE--------');
@@ -106,14 +106,6 @@ server.onStart(function () {
         response.write('<html><body><h1>Stopping Server');
         response.end('</h1></body></html>');
         server.stopServer();
-    }
-    });
-
-
-    server.any('/hello/dos', {call: function (request, response, parameters) {
-        while (true) {
-            console.log('dos attack');
-        }
     }
     });
 });

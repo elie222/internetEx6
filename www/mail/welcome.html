@@ -64,16 +64,20 @@
     <br />
     <table class="login">
         <tr>
-            <td>Login: </td><td>  <input /> </td>
+            <td>Username: </td><td>  <input /> </td>
         </tr>
         <tr>
             <td>Password: </td><td><input type='password'/></td>
         </tr>
    </table>
-    <input type="button" id="button"/>
+    <input type="button" id="button" value="Log in"/>
+
+    <form name="loginForm" action="login" method="POST">
+        Username: <input type="text" name="username"><br>
+        Password: <input type="password" name="password"><br>
+        <input type="submit" value="Log in">
+    </form>
 </div>
-
-
 
 </body>
 </html>
