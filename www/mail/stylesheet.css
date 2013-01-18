@@ -4,6 +4,55 @@ body
 }
 #container
 {
+
+    color: white;
+
+    font-family: cursive;
+
+
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 440px;
+    height: 450px;
+    margin-top: -200px;
+    margin-left: -220px;
+
+}
+
+table.login
+{
+
+    margin-right: 80px;;
+    text-align: left;
+    margin-left: 50px;
+    ;
+}
+
+.button
+{
+    background-color:white;
+    border-color: orange;
+    font-weight: bolder;
+    font-family: cursive;
+    border-style:outset;
+    border-width: 3px;
+
+}
+
+#loginButton
+{
+    width:60px;
+    height: 60px;
+}
+
+.contentBox
+{
+    display: block;
+    position: absolute;
+
+
     border-style:double;
     border-color:orange;
     border-width: 8px;
@@ -15,25 +64,30 @@ body
 
     padding: 10px;
     text-align: center;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 400px;
+
+    width: 410px;
     height: 300px;
-    margin-top: -150px;
-    margin-left: -200px;
+
+
 
 }
 
-table.login
+.navigation
 {
-    margin-left: 80px;
-    border-width: 1px;
-    border-style: groove;
-    text-align: left;
+    position: absolute;
+    right: 5px;;
+    bottom: 5px;
 }
 
-#button
+#errorMessage
 {
+    background-color: #50baff;
+}
 
+
+
+.caption
+{
+    font-family: cursive;
+    font-size: 24px;
 }

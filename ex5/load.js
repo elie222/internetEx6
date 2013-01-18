@@ -1,5 +1,5 @@
 var net = require('net');
-var myHttp = require('./myHttp');
+var myHttp = require('./../myHttp');
 
 var port = 8888;
 

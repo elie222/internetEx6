@@ -1,5 +1,5 @@
 // test
-var http = require('./myHttp');
+var http = require('./../myHttp');
 
 var port = 8888;
 var resourceMap = {

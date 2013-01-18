@@ -1,7 +1,7 @@
 var net = require('net');
 var http = require('http');
 var fs = require('fs');
-var myHttp = require('./myHttp');
+var myHttp = require('./../myHttp');
 
 var PORT = 8888;
 var NO_RESPONSE_TIMEOUT = 100;

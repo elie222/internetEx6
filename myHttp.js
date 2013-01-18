@@ -5,8 +5,8 @@ var path = require('path');
 var util = require("util");
 var events = require("events");
 var querystring = require("querystring");
-var settings = require('./settings');
-var uuid = require("./uuid");
+var settings = require('./ex5/settings');
+var uuid = require("./ex5/uuid");
 /***************** TODO ************************
 
  1. Add keep-alive upon receiving one            NO NEED
@@ -45,9 +45,7 @@ function createHTTPServer(pResourceMap, pRootFolder) {
         var socketNum = 0;
         var shuttingDown = false;
 
-        var publicMemory = {
-            users: {}
-        };
+        var publicMemory = {};
 
         var CONTENT_TYPES = {
             "js" : "application/javascript",
@@ -164,7 +162,7 @@ function createHTTPServer(pResourceMap, pRootFolder) {
 
                         var thatServer = that;
                         var thatRequest = this;
-                        var paramsRegex = new RegExp('(\\w+\\=\\w*)(\\&?(\\w+\\=\\w*))*');
+                        var paramsRegex = new RegExp('([^=&]+[=][^=&]*)([&]?([^=&]+[=][^=&]*)[&]?)*');
                         //var session = getActiveSession();
                         var search = '';
 
@@ -179,7 +177,7 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                         } else if (parsedData['Method']==='POST') {                            
                             //checking if body is in parameter format
                             search = parsedData['RequestBody'];
-                            //console.log('search: ' + search);
+
                             //console.log('paramsRegex.exec(search): ' + paramsRegex.exec(search));
                             if (paramsRegex.exec(search)) {
                                 if (search!==paramsRegex.exec(search)[0]) {
@@ -192,9 +190,13 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                         } else {
                             console.log('ERROR! Method must be GET or POST');//should never reach here
                         }
-
-                        this.parameters = querystring.parse(search);
-
+                        console.log('search: ' + search);
+                        thatRequest.parameters = querystring.parse(search);
+                        /*
+                        for(var key in thatRequest.parameters) {
+                            console.log("key = "+key);
+                        }
+                        */
                         this.getPublicMemory = function () {
                             return publicMemory;
                         };
@@ -400,10 +402,16 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                         };
 
                         this.sendStaticPage = function (page, callback) {
+                            /*
                             parsedData = {};
                             parsedData.RequestURI = page;
+
                             staticResponse(parsedData, callback);
-                        }
+                            */
+                            that.status = 303;
+                            that.headers['Location'] = page;
+                            that.end('');
+                        };
 
                         this.addCookie = function (cookie) {
                             // TODO: what happens if the user uses a Set-Cookie header?
@@ -644,6 +652,7 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                 }
 
                 function staticResponse(parsedData, callback) {
+
                     //console.log('Num of current requests:  '+ numOfCurrentRequests);
                     fileType = '';
                     requestedFile = (!resourceMap[parsedData.RequestURI]) ? parsedData.RequestURI : resourceMap[parsedData.RequestURI];
@@ -654,7 +663,7 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                     }
                     fileLocation = path.join(rootFolder,path.normalize(requestedFile));
                     activeFileName = fileLocation;
-                    //console.log('parsed file is ' + requestedFile);
+                    console.log('parsed file is ' + requestedFile);
 
                     fileType = path.extname(fileLocation).slice(1);
 
@@ -679,11 +688,13 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                                 reportError(404,'The File (' + fileLocation + ') was not found',callback);
                                 return;
                             }
-                            //console.log('File size is ' + stat.size + '\n');
+                            console.log('File size is ' + stat.size + '\n');
 
                             writeFile(fileLocation,CONTENT_TYPES[fileType],stat.size, callback);
                         });
                     });
+
+
                 }
 
                 function writeStatus(callback) {

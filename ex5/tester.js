@@ -1,4 +1,4 @@
-var myHttp = require("./myHttp");
+var myHttp = require("./../myHttp");
 var http = require('http');
 
 var port = 8888;

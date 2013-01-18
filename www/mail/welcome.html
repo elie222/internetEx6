@@ -1,42 +1,77 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Mail Application</title>
+    <title>Mail Application Login Screen</title>
     <link rel="stylesheet" type="text/css" href="/mail/stylesheet.css" />
+    <script src="/mail/include/jquery.js"></script>
 </head>
 <body>
 
 <div id="container">
     <br />
-    <span style="font-size:24px">
-         Welcome to Mail Application!
-    </span>
-    <br />
-    <br />
-<!--     Sign in:
-    <br />
-    <br />
-    <table class="login">
-        <tr>
-            <td>Username: </td><td>  <input /> </td>
-        </tr>
-        <tr>
-            <td>Password: </td><td><input type='password'/></td>
-        </tr>
-   </table>
-    <input type="button" id="button" value="Log in"/> -->
+    <div id="errorMessage"> </div>
 
-    <div id="loginBox" >
-        <form name="loginForm" action="login" method="POST">
-            Username: <input type="text" name="username"><br>
-            Password: <input type="password" name="password"><br>
-            <input type="submit" value="Log in">
+    <br />
+
+
+    <div id="loginBox" class="contentBox">
+        <div class="caption">
+            Welcome to Mail Application! <br />
+            Please login:<br/>
+            <br/>
+         </div>
+        <form id="loginForm" action="login" method="POST">
+            <table class="login">
+                <tr>
+                    <td>Username: </td><td>  <input name="username" /> </td>
+                    <td rowspan="2">
+                        <input class="button" id="loginButton" type="button"  value="Login" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Password: </td><td><input name="password" type='password'/></td>
+                </tr>
+            </table>
+
         </form>
-        <input type="button" value="Go To Register" onclick="buttonPushed('goToRegister');"/>
+         <input type="button" class="button navigation" value="Go To Register" onclick="buttonPushed('goToRegister');"/>
+
     </div>
 
-    <div id="registerBox" style="display: none;">
-        <form name="registerForm" action="register" method="POST">
+    <div id="registerBox" class="contentBox" style="display: none;">
+        <div class="caption">
+            Welcome to Mail Application! <br />
+            Registration Form:<br/>
+            <br/>
+        </div>
+        <form id="registerForm" action="register" method="POST">
+            <table class="login">
+                <tr>
+                    <td>Username:</td> <td> <input type="text" name="username"></td>
+                </tr>
+                <tr>
+                    <td>Password:</td> <td> <input type="text" name="password"></td>
+                </tr>
+                <tr>
+                    <td>First Name:</td> <td> <input type="text" name="firstName"></td>
+                </tr>
+                <tr>
+                    <td>Last Name:</td> <td> <input type="text" name="lastName"></td>
+                </tr>
+                <tr>
+                    <td>Age:</td> <td> <input type="text" name="age"></td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align: center"><input id="registerButton" type="button" class="button"  value="Register"></td>
+
+                </tr>
+            </table>
+
+            <input type="button" class="button navigation"  value="Go To Login" onclick="buttonPushed('goToLogin');"/>
+
+
+        </form>
+            <!--
             Username: <input type="text" name="username"><br>
             Password: <input type="password" name="password"><br>
             First Name: <input type="text" name="firstname"><br>
@@ -45,23 +80,62 @@
             <input type="submit" value="Register">
         </form>
         <input type="button" value="Go To Login" onclick="buttonPushed('goToLogin');"/>
+        -->
     </div>
-    <div id="errorMessage"></div><!--TODO show an error message if login details are invalid.-->
+
 </div>
+
 
 <script type="text/javascript">
     function buttonPushed(button) {
         console.log('HERE');
         if (button === 'goToRegister') {
             document.getElementById("loginBox").style.display="none";
-            document.getElementById("registerBox").style.display="inline";
+            document.getElementById("registerBox").style.display="block";
         } else if (button === 'goToLogin') {
             document.getElementById("registerBox").style.display="none";
-            document.getElementById("loginBox").style.display="inline";
+            document.getElementById("loginBox").style.display="block";
         } else {
             console.log('not a button name');
         }
     }
 </script>
+
+<script type="text/javascript" >
+
+        $(loginButton).click(function () {
+            $.post('login',$(loginForm).serialize(),function (data,status) {
+                if(status === 'success') {
+                    if(data === 'OK') {
+                        window.location.href = '/mail/mail.html';
+                    }
+                    else {
+                        $(errorMessage).text('Error: '+data);
+                        $(errorMessage).css('background-color','red');
+                    }
+                }
+            });
+
+        });
+
+
+       $(registerButton).click(function () {
+            $.post('register',$(registerForm).serialize(),function (data,status) {
+                if(status === 'success') {
+                    if(data === 'OK') {
+                        window.location.href = '/mail/mail.html';
+                    }
+                    else {
+                        $(errorMessage).text('Error: '+data);
+                        $(errorMessage).css('background-color','red');
+                    }
+                }
+            });
+
+        });
+
+
+</script>
+
 </body>
 </html>
