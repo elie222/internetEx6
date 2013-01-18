@@ -49,15 +49,16 @@ var loginCallbackObj = {call: function (request, response, parameters) {
 var registerCallbackObj = {call: function (request, response, parameters) {
 	var userObj = {};
 	if (!request.getPublicMemory().users[request.parameters.username]) {
-		userObj = {details: {
+		userObj = {
+			details: {
 				username: request.parameters.username,
 				password: request.parameters.password,
 				firstname: request.parameters.firstname,
 				lastname: request.parameters.surname,
 				age: request.parameters.age
 			},
-			mails: {},
-			sent: {}
+			mails: [],
+			sent: []
 		};
 		request.getPublicMemory().users[request.parameters.username] = userObj;
 		console.log('sending static page: /mail/mail.html');
@@ -74,12 +75,34 @@ var registerCallbackObj = {call: function (request, response, parameters) {
 }
 };
 
+var sendEmailCallbackObj = {call: function (request, response, parameters) {
+	var emailObj = {
+		from: request.parameters.from,
+		to: request.parameters.to,
+		subject: request.parameters.subject,
+		body: request.parameters.body,
+		arrivalDate: request.parameters.arrivalDate
+	};
+	if (!request.getPublicMemory().users[request.parameters.from]) {
+		request.getPublicMemory().users[request.parameters.from].sent.push(emailObj);
+		if (!request.getPublicMemory().users[request.parameters.to]) {
+			request.getPublicMemory().users[request.parameters.to].mails.push(emailObj);
+		} else {
+			console.log('ERROR sending email. Receiver does not exist.');
+		}
+	} else {
+		console.log('ERROR sending email. Sender does not exist.');
+	}
+}
+};
+
 var server = myHttp.createHTTPServer(resourceMap, rootFolder);
 
 server.onStart(function () {
 	console.log('Mail server started.');
 	server.post('/mail/login', loginCallbackObj);
 	server.post('/mail/register', registerCallbackObj);
+	server.post('/mail/sendEmail', sendEmailCallbackObj);
 });
 
 server.startServer(port);
