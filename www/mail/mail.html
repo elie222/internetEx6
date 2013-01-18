@@ -20,19 +20,31 @@
 		</div>
 		<div>Received Emails:</div>		
 		<div id="receivedEmails">
-			
+			<div id="email"></div>
 		</div>
 	</div>
 
-<script type="text/javascript">
-    function buttonPushed(button) {
-        console.log('HERE');
-        if (button === 'composeNewEmail') {
-            document.getElementById("newEmailBox").style.display="inline";
-        } else {
-            console.log('not a button name');
-        }
-    }
-</script>
+	<script type="text/javascript">
+	    function buttonPushed(button) {
+	        console.log('HERE');
+	        if (button === 'composeNewEmail') {
+	            document.getElementById("newEmailBox").style.display="inline";
+	        } else {
+	            console.log('not a button name');
+	        }
+	    }
+	</script>
+
+	<!-- FOR DISPLAYING EMAILS -->
+    <script src="/jquery.js"></script>
+    <script>
+        $(document).ready(function () {
+            //alert("Hello!");
+            $.get('/mail/emails', function (data) {
+                $('#receivedEmails').html('REMOVE ALL THIS: ' + data);
+                //alert('AJAX EMAIL CALLBACK');
+            });
+        });
+    </script>
 </body>
 </html>

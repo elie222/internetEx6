@@ -100,6 +100,13 @@ var sendEmailCallbackObj = {call: function (request, response, parameters) {
 }
 };
 
+//TODO. This callback has to return all the emails for the currently logged in user, to the browser, which will then display it.
+var getEmailsCallbackObj = {call: function (request, response, parameters) {
+	console.log('getEmailsCallbackObj.');
+	response.end('some response');
+}	
+};
+
 //--------------------------------------------------------------
 //FOR TESTING PURPOSES
 //--------------------------------------------------------------
@@ -120,6 +127,7 @@ server.onStart(function () {
 	server.post('/mail/register', registerCallbackObj);
 	server.post('/mail/sendEmail', sendEmailCallbackObj);
 	server.get('/mail/publicMemory.html', seePublicMemoryCallbackObj);
+	server.get('/mail/emails', getEmailsCallbackObj);
 });
 
 server.startServer(port);
