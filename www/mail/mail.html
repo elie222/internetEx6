@@ -7,22 +7,32 @@
 <body>
 	<div id="container">
 		<div>Hello! You've managed to login!</div>
-		<button id="composeButton">Compose New Email</button>
-	    <form name="loginForm" action="login" method="POST">
-	        From: <input type="text" name="from"><br>
-	        To: <input type="text" name="to"><br>
-	        Subject: <input type="text" name="subject"><br>
-	        Body: <textarea name="body"></textarea><br>
-	        Arrival Date: <input type="text" name="arrivalDate"><br>
-	        <input type="submit" value="Send">
-	    </form>
+		<input type="button" value="Compose New Email" onclick="buttonPushed('composeNewEmail');"/>
+	    <div id="newEmailBox" style="display: none;">
+		    <form name="loginForm" action="login" method="POST">
+		        From: <input type="text" name="from"><br>
+		        To: <input type="text" name="to"><br>
+		        Subject: <input type="text" name="subject"><br>
+		        Body: <textarea name="body"></textarea><br>
+		        Arrival Date: <input type="text" name="arrivalDate"><br>
+		        <input type="submit" value="Send">
+		    </form>
+		</div>
+		<div>Received Emails:</div>		
 		<div id="receivedEmails">
-			Received Emails:
+			
 		</div>
 	</div>
 
-	<script type="text/javascript">
-
-	</script>
+<script type="text/javascript">
+    function buttonPushed(button) {
+        console.log('HERE');
+        if (button === 'composeNewEmail') {
+            document.getElementById("newEmailBox").style.display="inline";
+        } else {
+            console.log('not a button name');
+        }
+    }
+</script>
 </body>
 </html>
