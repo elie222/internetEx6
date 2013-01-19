@@ -8,11 +8,11 @@
 exports.callBack = {call: function (request, response, parameters) {
     //console.log(request);
     var emailObj = {
-        from: request.parameters.from,
+        from: '',//TODO
         to: request.parameters.to,
         subject: request.parameters.subject,
         body: request.parameters.body,
-        arrivalDate: request.parameters.arrivalDate
+        arrivalDate: ''//TODO
     };
     //console.log(emailObj);
     if (request.getPublicMemory().users[request.parameters.from]) {
