@@ -5,6 +5,9 @@
  * Time: 17:07
  * To change this template use File | Settings | File Templates.
  */
+var login = require('./login');
+var crypto = require('crypto');
+
 exports.callBack = {call: function (request, response, parameters) {
     var userObj = {};
     if(!request.parameters['username']) {
@@ -34,30 +37,39 @@ exports.callBack = {call: function (request, response, parameters) {
     else if (!request.getPublicMemory().hasOwnProperty('users') ||  !request.getPublicMemory()['users'][request.parameters.username]) {
         if(!request.getPublicMemory().hasOwnProperty('users')) {
             console.log('First user!');
-            request.getPublicMemory().users = {};
+            request.getPublicMemory().users = {
+                testUser : {
+                    details: {
+                        username: "testUser",
+                        password: "",
+                        firstName:"Test",
+                        lastName:"User",
+                        age:0
+                    },
+                    mails:[],
+                    sent: []
+                }
+            };
         }
 
         userObj = {
             details: {
                 username: request.parameters.username,
-                password: request.parameters.password,
+                password: crypto.createHash('sha1').update(request.parameters.password).digest('hex'),
                 firstName: request.parameters.firstName,
                 lastName: request.parameters.lastName,
                 age: request.parameters.age
             },
-            mails: [],
+            mails: [ {from:'testUser', to:'admin', arrivalDate:new Date(), subject:'hello' , body: 'This is a test message'}],
             sent: []
         };
 
+
         request.getPublicMemory().users[request.parameters.username] = userObj;
-        response.status = 200;
-        response.end('OK');
-        //console.log('sending static page: /mail/mail.html');
-        //response.sendStaticPage('/mail/mail.html', function () {
-            //console.log('sending static page: /mail/stylesheet.css');
-            //response.sendStaticPage('/mail/stylesheet.css', function () {});
-        //});
-    } else {
+        login.success(request,response,request.parameters.username);
+
+    }
+    else {
         //console.log('Username already exists.');
         response.status = 200;//TODO should be something else probably
         response.write('Username already exists.');

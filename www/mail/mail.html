@@ -3,46 +3,94 @@
 <head>
     <title>Mail Application</title>
     <link rel="stylesheet" type="text/css" href="/mail/stylesheet.css" />
+    <link rel="stylesheet" type="text/css" href="/mail/gui.css" />
 </head>
 <body>
-	<div id="container">
-		<div>Hello! You've managed to login!</div>
-		<input type="button" value="Compose New Email" onclick="buttonPushed('composeNewEmail');"/>
-	    <div id="newEmailBox" style="display: none;">
-		    <form name="sendEmailForm" action="sendEmail" method="POST">
-		        From: <input type="text" name="from"><br>
-		        To: <input type="text" name="to"><br>
-		        Subject: <input type="text" name="subject"><br>
-		        Body: <textarea name="body"></textarea><br>
-		        Arrival Date: <input type="text" name="arrivalDate"><br>
-		        <input type="submit" value="Send">
-		    </form>
-		</div>
-		<div>Received Emails:</div>		
-		<div id="receivedEmails">
-			<div id="email"></div>
-		</div>
-	</div>
+	<div id="container" class="clientArea">
+
+            <div id="toolbar" class="window">
+                <div id="userDetails">Show user name here</div>
+                <input type="button" class="button" value="Show MailBox" onclick="buttonPushed('backToMailbox');"/>
+                <input type="button" class="button" value="Compose New Mail" onclick="buttonPushed('composeNewEmail');"/>
+                <input type="button" class="button" value="Logout"/>
+            </div>
+
+            <div id="mailList" class="window fullScreen">
+                <table id="list">
+                    <tr>
+                        <th style="width:30px">From</th><th style="width:100px">Arrival Date:</th><th style="width:200px">  Subject</th><th style="width:50px">Actions</th>
+                    </tr>
+                </table>
+
+            </div>
+
+            <div id="composeDialog" class="window fullScreen">
+
+                <form name="sendEmailForm" action="sendEmail" method="POST">
+                    <table class="input">
+                        <tr style="height:50px">
+                            <td style="width:100px">From: </td><td><input class="input" type="text" name="from"></td>
+                        </tr>
+                        <tr style="height:50px">
+                            <td  style="width:100px">Subject: </td><td><input class="input" type="text" name="subject"></td>
+                        </tr>
+                        <tr>
+                            <td  style="width:100px">Body: </td><td><textarea class="input" name="body" ></textarea></td>
+                        </tr>
+                        <tr style="height:50px; text-align: center" >
+                           <td colspan="2" style="width:50px"><input class="button" type="button" value="Send"> </td>
+                        </tr>
+                    </table>
+                    <!--
+                    From: <input type="text" name="from"><br>
+                    To: <input type="text" name="to"><br>
+                    Subject: <input type="text" name="subject"><br>
+                    Body: <textarea name="body"></textarea><br>
+                    Arrival Date: <input type="text" name="arrivalDate"><br>
+                    <input type="submit" value="Send">
+                    -->
+                </form>
+            </div>
+
+    </div>
+
+
 
 	<script type="text/javascript">
 	    function buttonPushed(button) {
 	        console.log('HERE');
 	        if (button === 'composeNewEmail') {
-	            document.getElementById("newEmailBox").style.display="inline";
-	        } else {
+	            document.getElementById("composeDialog").style.display="block";
+                document.getElementById("mailList").style.display="none";
+	        }
+            else if (button === 'backToMailbox') {
+                document.getElementById("mailList").style.display="block";
+                document.getElementById("composeDialog").style.display="none";
+            }
+            else {
 	            console.log('not a button name');
 	        }
 	    }
 	</script>
 
 	<!-- FOR DISPLAYING EMAILS -->
-    <script src="/jquery.js"></script>
+    <script src="/mail/include/jquery.js"></script>
     <script>
         $(document).ready(function () {
-            //alert("Hello!");
-            $.get('/mail/emails', function (data) {
-                $('#receivedEmails').html('REMOVE ALL THIS: ' + data);
-                //alert('AJAX EMAIL CALLBACK');
+
+            $.post('mailList',{},function(data,status) {
+
+                if(status === "success") {
+
+                    if(data === "FAIL") {
+
+                        window.location.href = 'welcome.html';
+                    }
+                    else {
+
+                        $(list).append(data);
+                    }
+                }
             });
         });
     </script>

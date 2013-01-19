@@ -52,7 +52,9 @@ server.onStart(function () {
 
 	server.post('/mail/login', mail.login.callBack);
 	server.post('/mail/register', mail.register.callBack);
+    server.any('/mail/mail.html',mail.gui.callBack);
 	server.post('/mail/sendEmail', mail.sendMail.callBack);
+    server.any('/mail/mailList', mail.mailList.callBack);
 
 
 	server.get('/mail/publicMemory.html', seePublicMemoryCallbackObj);

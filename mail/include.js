@@ -8,3 +8,5 @@
 exports.login = require('./login');
 exports.register = require('./register');
 exports.sendMail = require('./sendMail');
+exports.gui = require('./gui');
+exports.mailList  = require('./mailList');

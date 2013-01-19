@@ -2,33 +2,17 @@ body
 {
     background-color: #50baff;
 }
-#container
-{
 
+.clientArea
+{
     color: white;
-
     font-family: cursive;
-
-
     text-align: center;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 440px;
-    height: 450px;
-    margin-top: -200px;
-    margin-left: -220px;
-
+    padding: 0px;
 }
 
-table.login
-{
 
-    margin-right: 80px;;
-    text-align: left;
-    margin-left: 50px;
-    ;
-}
+
 
 .button
 {
@@ -41,13 +25,13 @@ table.login
 
 }
 
-#loginButton
+.smallBox
 {
-    width:60px;
-    height: 60px;
+    width: 410px;
+    height: 300px;
 }
 
-.contentBox
+.window
 {
     display: block;
     position: absolute;
@@ -65,11 +49,14 @@ table.login
     padding: 10px;
     text-align: center;
 
-    width: 410px;
-    height: 300px;
+}
 
-
-
+.frame
+{
+    border-style: ridge;
+    border-color: orange;
+    border-width: 3px;
+    padding: 0px;
 }
 
 .navigation
@@ -83,8 +70,6 @@ table.login
 {
     background-color: #50baff;
 }
-
-
 
 .caption
 {

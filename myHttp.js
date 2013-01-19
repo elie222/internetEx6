@@ -6,7 +6,7 @@ var util = require("util");
 var events = require("events");
 var querystring = require("querystring");
 var settings = require('./ex5/settings');
-var uuid = require("./ex5/uuid");
+var uuid = require("./uuid");
 /***************** TODO ************************
 
  1. Add keep-alive upon receiving one            NO NEED
@@ -402,15 +402,17 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                         };
 
                         this.sendStaticPage = function (page, callback) {
-                            /*
+
                             parsedData = {};
                             parsedData.RequestURI = page;
 
                             staticResponse(parsedData, callback);
-                            */
+
+                            /*
                             that.status = 303;
                             that.headers['Location'] = page;
                             that.end('');
+                            */
                         };
 
                         this.addCookie = function (cookie) {

@@ -1,0 +1,117 @@
+#container
+{
+    top:50%;
+    left:50%;
+
+    width:1024px;
+    height:768px;
+
+    margin-left: 100px;
+    margin-top: 50px;
+
+    padding: 0px;
+
+    border-width: 1px;
+    border-style: groove;;
+}
+
+#mainWindow
+{
+    position: absolute;
+    top:150px;
+    width:1024px;
+    height:768px;
+}
+
+#toolbar
+{
+    position: absolute;
+
+    width:990px;
+    height:25px;
+}
+
+.fullScreen
+{
+    top:110px;
+    position: absolute;
+    width:990px;
+    height:700px;
+    background-color: white;
+}
+
+#userDetails
+{
+    float:left;
+}
+
+#composeDialog
+{
+    display: none;
+}
+
+table.input
+{
+
+    width:80%;
+    height:500px;
+
+    min-width:400px;
+
+    margin-left:90px;
+    margin-right:90px;
+    margin-top:25px;
+
+    border-color: orange;
+    border-style: double;
+    border-width: 5px;
+
+    background-color: #236dff;
+
+}
+
+input.input
+{
+    width:90%;
+    max-width:600px;
+    border-color: orange;
+    border-style: inset;
+}
+
+textarea.input
+{
+    width:90%;
+    height:90%;
+    border-color: orange;
+    border-style: inset;
+    max-width: 600px;
+    max-height: 400px;
+
+}
+
+
+
+table#list
+{
+    width:90%;
+    margin-left: 50px;
+    margin-right: 50px;;
+}
+
+table#list th , table#list td
+{
+
+    width:100px;
+    height:20px;
+}
+
+table#list th
+{
+    background-color:  #236dff;
+}
+
+table#list td
+{
+    color:blue;
+}
+
