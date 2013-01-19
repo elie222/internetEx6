@@ -40,3 +40,22 @@ exports.callBack = {call: function (request, response, parameters) {
 exports.getUsernameCallback = {call: function (request, response, parameters) {
     response.end(login.validate(request,response));
 }};
+
+exports.getAllUsersCallback = {call: function (request, response, parameters) {
+    var usersToReturn = [];
+    var allUsers = Object.keys(request.getPublicMemory().users);
+    //console.log('allUsers: ' + allUsers);
+    allUsers.splice(allUsers.indexOf(login.validate(request,response)),1);
+    //console.log('allUsers with sender: ' + allUsers);
+    //console.log('request.parameters.term: ' + request.parameters.term);
+    for (var i=0; i<allUsers.length; ++i) {
+        console.log(allUsers[i]);
+        if (allUsers[i].indexOf(request.parameters.term)===0) {
+            //console.log('TRUE');
+            usersToReturn.push(allUsers[i]);
+        }
+        //console.log('FALSE');
+    }
+    //console.log('usersToReturn: ' + JSON.stringify(usersToReturn));
+    response.end(JSON.stringify(usersToReturn));
+}};

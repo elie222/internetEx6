@@ -4,6 +4,7 @@
     <title>Mail Application</title>
     <link rel="stylesheet" type="text/css" href="/mail/stylesheet.css" />
     <link rel="stylesheet" type="text/css" href="/mail/gui.css" />
+    <link rel="stylesheet" type="text/css" href="/mail/include/jquery-ui.css" />
 </head>
 <body>
 	<div id="container" class="clientArea">
@@ -26,7 +27,7 @@
                 <form id="sendEmailForm">
                     <table class="input">
                         <tr style="height:50px">
-                            <td style="width:100px">To: </td><td><input class="input" type="text" name="to"></td>
+                            <td style="width:100px">To: </td><td><input id="people" class="input" type="text" name="to"></td>
                         </tr>
                         <tr style="height:50px">
                             <td  style="width:100px">Subject: </td><td><input class="input" type="text" name="subject"></td>
@@ -38,14 +39,6 @@
                            <td colspan="2" style="width:50px"><input type="submit" class="button" value="Send"> </td>
                         </tr>
                     </table>
-                    <!--
-                    From: <input type="text" name="from"><br>
-                    To: <input type="text" name="to"><br>
-                    Subject: <input type="text" name="subject"><br>
-                    Body: <textarea name="body"></textarea><br>
-                    Arrival Date: <input type="text" name="arrivalDate"><br>
-                    <input type="submit" value="Send">
-                    -->
                 </form>
             </div>
     </div>
@@ -69,6 +62,7 @@
 
 	<!-- FOR DISPLAYING EMAILS -->
     <script src="/mail/include/jquery.js"></script>
+    <script src="/mail/include/jquery-ui.js"></script>
     <script>
         $(document).ready(function () {
             $.get('/mail/getLoggedInUsername', function (data, status) {
@@ -113,6 +107,46 @@
                 });
             });
         });
+    </script>
+  <script>
+  $(function() { 
+    $( "#people" ).autocomplete({
+      source: "/mail/getAllUsers",
+      minLength: 1
+    });
+  });
+  </script>
+    <script>
+        //$(function() {
+        //     var availableTagsOrig = [
+        //       "ActionScript",
+        //       "AppleScript",
+        //       "Asp",
+        //       "BASIC",
+        //       "C",
+        //       "C++",
+        //       "Clojure",
+        //       "COBOL",
+        //       "ColdFusion",
+        //       "Erlang",
+        //       "Fortran",
+        //       "Groovy",
+        //       "Haskell",
+        //       "Java",
+        //       "JavaScript",
+        //       "Lisp",
+        //       "Perl",
+        //       "PHP",
+        //       "Python",
+        //       "Ruby",
+        //       "Scala",
+        //       "Scheme"
+        //     ];
+        //     var availableTags = [];
+        //     $( "#people" ).autocomplete({
+        //         source: availableTags
+        //     });
+        // });
     </script>
 </body>
 </html>
