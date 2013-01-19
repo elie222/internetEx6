@@ -30,7 +30,7 @@ exports.callBack = {call: function (request, response, parameters) {
                 "<td>"+sender.firstName+"   "+sender.lastName + "</td>" +
                 "<td>("+mails[mail].arrivalDate.toUTCString()   +")</td>"+
                 "<td>"+ mails[mail].subject+"</td>" +
-                "<td>TODO: deletebutton</td>" +
+                "<td>TODO: delete button, reply button, show email button</td>" +
                 "</tr>";
         }
         response.end(output);
