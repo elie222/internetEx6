@@ -106,9 +106,9 @@ server.onStart(function () {
 	server.post('/mail/sendEmail', mail.sendMail.callBack);
     server.any('/mail/mailList', mail.mailList.callBack);
 
-
 	server.get('/mail/publicMemory.html', seePublicMemoryCallbackObj);
 	server.get('/mail/emails', getEmailsCallbackObj);
+	server.get('/mail/getLoggedInUsername', mail.mailList.getUsernameCallback);//added this. is this okay?
 });
 
 server.startServer(port);

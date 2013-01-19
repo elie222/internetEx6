@@ -6,8 +6,8 @@
  * To change this template use File | Settings | File Templates.
  */
 var login = require('./login');
-exports.callBack = {call : function (request, response, parameters) {
 
+exports.callBack = {call: function (request, response, parameters) {
     var currentUser = login.validate(request,response);
     console.log("currentUser " + currentUser);
     var mails = null;
@@ -22,9 +22,7 @@ exports.callBack = {call : function (request, response, parameters) {
         mails = request.getPublicMemory().users[currentUser].mails;
 
         for(var mail in mails) {
-
             sender.firstName =  request.getPublicMemory().users[mails[mail].from].details.firstName;
-
             sender.lastName =  request.getPublicMemory().users[mails[mail].from].details.lastName;
             //console.log(request.getPublicMemory().users[mails[mail].from].details.lastName);
             console.log(mails[mail]);
@@ -36,9 +34,9 @@ exports.callBack = {call : function (request, response, parameters) {
                 "</tr>";
         }
         response.end(output);
-
     }
+}};
 
-
-
+exports.getUsernameCallback = {call: function (request, response, parameters) {
+    response.end(login.validate(request,response));
 }};

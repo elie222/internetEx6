@@ -71,6 +71,17 @@
     <script src="/mail/include/jquery.js"></script>
     <script>
         $(document).ready(function () {
+            $.get('/mail/getLoggedInUsername', function (data, status) {
+                if(status === "success") {
+                    if(data === "FAIL") {
+                        window.location.href = 'welcome.html';
+                    }
+                    else {
+                        $('#userDetails').html(data);
+                    }
+                }
+            });
+
             $.post('/mail/mailList', {}, function (data, status) {
                 if(status === "success") {
                     if(data === "FAIL") {
@@ -81,7 +92,7 @@
                     }
                 }
             });
-            //TODO. working on this.
+
             $("#sendEmailForm").submit(function (event){
                 //alert($(this).serialize());
                 event.preventDefault();

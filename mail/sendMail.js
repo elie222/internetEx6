@@ -16,8 +16,8 @@ exports.callBack = {call: function (request, response, parameters) {
         body: request.parameters.body,
         arrivalDate: ''//TODO
     };
-    console.log('Sending emailObj:');
-    console.log(emailObj);
+    //console.log('Sending emailObj:');
+    //console.log(emailObj);
     if (request.getPublicMemory().users[emailObj.from]) {
         //console.log('Sender exists.');
         request.getPublicMemory().users[emailObj.from].sent.push(emailObj);
