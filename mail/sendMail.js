@@ -16,18 +16,23 @@ exports.callBack = {call: function (request, response, parameters) {
         body: request.parameters.body,
         arrivalDate: ''//TODO
     };
-    console.log('emailObj:');
+    console.log('Sending emailObj:');
     console.log(emailObj);
     if (request.getPublicMemory().users[emailObj.from]) {
-        console.log('Sender exists.');
+        //console.log('Sender exists.');
         request.getPublicMemory().users[emailObj.from].sent.push(emailObj);
         if (request.getPublicMemory().users[emailObj.to]) {
-            console.log('Receiver exists.');
+            //console.log('Receiver exists.');
             request.getPublicMemory().users[emailObj.to].mails.push(emailObj);
+            response.status = 200;//TODO don't think this actually works though. automatically changes to 200 I think
+            response.end('Email sent. TODO change this.');
+            return;
         } else {
             console.log('ERROR sending email. Receiver ' + emailObj.to + ' does not exist.');
         }
     } else {
         console.log('ERROR sending email. Sender ' + emailObj.from + ' does not exist.');
     }
+    response.status = 500;//TODO don't think this actually works though. automatically changes to 200 I think
+    response.end('Sender or receiver does not exist.');
 }};

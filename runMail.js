@@ -32,10 +32,7 @@ var loginCallbackObj = {call: function (request, response, parameters) {
 	if (request.getPublicMemory().users[request.parameters.username]) {
 		if (request.getPublicMemory().users[request.parameters.username].details.password === request.parameters.password) {
 			console.log('login succuessful. sending static page: /mail/mail.html');
-			response.sendStaticPage('/mail/mail.html', function () {
-				//console.log('sending static page: /mail/stylesheet.css');
-				//response.sendStaticPage('/mail/stylesheet.css', function () {});
-			});
+			response.sendStaticPage('/mail/mail.html', function () {});
 		} else {
 			invalidUsernameOrPassword();
 		}
@@ -67,10 +64,7 @@ var registerCallbackObj = {call: function (request, response, parameters) {
 		};
 		request.getPublicMemory().users[request.parameters.username] = userObj;
 		console.log('sending static page: /mail/mail.html');
-		response.sendStaticPage('/mail/mail.html', function () {
-			//console.log('sending static page: /mail/stylesheet.css');
-			//response.sendStaticPage('/mail/stylesheet.css', function () {});
-		});
+		response.sendStaticPage('/mail/mail.html', function () {});
 	} else {
 		console.log('Username already exists.');
 		response.status = 200;//TODO should be something else probably
