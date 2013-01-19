@@ -6,8 +6,8 @@
  * To change this template use File | Settings | File Templates.
  */
 var crypto = require('crypto');
-exports.callBack = {call: function (request, response, parameters) {
 
+exports.callBack = {call: function (request, response, parameters) {
     //console.log(request.getPublicMemory());
     //console.log(request);
     //console.log(response);
@@ -29,18 +29,13 @@ exports.callBack = {call: function (request, response, parameters) {
         invalidUsernameOrPassword();
     }
 
-
-
     function invalidUsernameOrPassword () {
         response.status = 200;
         response.end('Wrong Username or password!');
     }
-
-
 }};
 
 function success(request, response, username) {
-
     request.getSession().mailUser = username;
 
     response.status = 200;

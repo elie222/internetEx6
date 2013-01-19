@@ -190,7 +190,7 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                         } else {
                             console.log('ERROR! Method must be GET or POST');//should never reach here
                         }
-                        console.log('search: ' + search);
+                        //console.log('search: ' + search);
                         thatRequest.parameters = querystring.parse(search);
                         /*
                         for(var key in thatRequest.parameters) {
@@ -332,10 +332,10 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                         function formatCookies() {
                             // write cookies
                             if(Object.keys(cookies).length > 0) {
-                                console.log('A cookie is found!');
+                                //console.log('A cookie is found!');
                                 for(var cookie in cookies) {
                                     if(cookies.hasOwnProperty(cookie)) {
-                                        console.log('writing cookie:');
+                                        //console.log('writing cookie:');
                                         // set the key=value pair
                                         cookieOutput += 'Set-Cookie: ' + cookie + '=' + cookies[cookie]['value'];
                                         // check for additional properties and add as necessary
@@ -665,7 +665,7 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                     }
                     fileLocation = path.join(rootFolder,path.normalize(requestedFile));
                     activeFileName = fileLocation;
-                    console.log('parsed file is ' + requestedFile);
+                    //console.log('parsed file is ' + requestedFile);
 
                     fileType = path.extname(fileLocation).slice(1);
 
@@ -690,7 +690,7 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                                 reportError(404,'The File (' + fileLocation + ') was not found',callback);
                                 return;
                             }
-                            console.log('File size is ' + stat.size + '\n');
+                            //console.log('File size is ' + stat.size + '\n');
 
                             writeFile(fileLocation,CONTENT_TYPES[fileType],stat.size, callback);
                         });

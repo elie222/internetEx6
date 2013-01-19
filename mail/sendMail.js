@@ -5,26 +5,29 @@
  * Time: 17:08
  * To change this template use File | Settings | File Templates.
  */
+var mail = require('./include');
+
 exports.callBack = {call: function (request, response, parameters) {
     //console.log(request);
     var emailObj = {
-        from: '',//TODO
+        from: mail.login.validate(request, response),
         to: request.parameters.to,
         subject: request.parameters.subject,
         body: request.parameters.body,
         arrivalDate: ''//TODO
     };
-    //console.log(emailObj);
-    if (request.getPublicMemory().users[request.parameters.from]) {
+    console.log('emailObj:');
+    console.log(emailObj);
+    if (request.getPublicMemory().users[emailObj.from]) {
         console.log('Sender exists.');
-        request.getPublicMemory().users[request.parameters.from].sent.push(emailObj);
-        if (request.getPublicMemory().users[request.parameters.to]) {
+        request.getPublicMemory().users[emailObj.from].sent.push(emailObj);
+        if (request.getPublicMemory().users[emailObj.to]) {
             console.log('Receiver exists.');
-            request.getPublicMemory().users[request.parameters.to].mails.push(emailObj);
+            request.getPublicMemory().users[emailObj.to].mails.push(emailObj);
         } else {
-            console.log('ERROR sending email. Receiver ' + request.parameters.to + ' does not exist.');
+            console.log('ERROR sending email. Receiver ' + emailObj.to + ' does not exist.');
         }
     } else {
-        console.log('ERROR sending email. Sender ' + request.parameters.from + ' does not exist.');
+        console.log('ERROR sending email. Sender ' + emailObj.from + ' does not exist.');
     }
 }};
