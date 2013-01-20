@@ -11,7 +11,7 @@ exports.callBack = {call: function (request, response, parameters) {
     var currentUser = login.validate(request,response);
     console.log("currentUser " + currentUser);
     var mails = null;
-    var output = '';
+    var output = "<tr><th style=\"width:30px\">From</th><th style=\"width:100px\">Arrival Date:</th><th style=\"width:200px\">  Subject</th><th style=\"width:50px\">Actions</th></tr>";
     var sender = {};
     if(!currentUser) {
         console.log("here again");
@@ -20,6 +20,7 @@ exports.callBack = {call: function (request, response, parameters) {
     else {
         console.log("here");
         mails = request.getPublicMemory().users[currentUser].mails;
+
 
         for(var mail in mails) {
             sender.firstName =  request.getPublicMemory().users[mails[mail].from].details.firstName;

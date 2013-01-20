@@ -5,22 +5,29 @@
  * Time: 16:06
  * To change this template use File | Settings | File Templates.
  */
+var REFRESH_RATE_SEC = 1;// TODO: use settings.js or something...
 $(document).ready(function () {
-    $.post('/mail/mailList', {}, function (data, status) {
-        if(status === "success") {
-            if(data === "FAIL") {
-                window.location.href = 'welcome.html';
-            }
-            else {
-                $('#userDetails').html("Welcome Back " + data + "!"); //TODO what is this line? LEO: it's showing the current user on the top left
-                $('#list').append(data);
-            }
-        }
-    });
+
+    (function poll() {
+        setTimeout(function () {
+            $.post('/mail/mailList', {}, function (data, status) {
+                if(status === "success") {
+                    if(data === "FAIL") {
+                        window.location.href = 'welcome.html';
+                    }
+                    else {
+                        $('#list').html(data);
+                    }
+                }
+                poll();
+            });
+        },REFRESH_RATE_SEC * 1000);
+    })();
+
 
     $.get('/mail/getLoggedInUsername', function (data, status) {
         if(status === "success") {
-            $('#userDetails').html(data);
+            $('#userDetails').html('Welcome Back ' +data + '!');
         } else {
             console.log('ERROR getting currently logged in username!');
         }

@@ -14,17 +14,21 @@
 	<div id="container" class="clientArea">
 
             <div id="toolbar" class="window">
-                <div id="userDetails"></div>
+                <div id="userDetails">Loading...</div>
                 <input type="button" class="button" value="Show MailBox" onclick="buttonPushed('backToMailbox');"/>
-                <input type="button" class="button" value="Show MailBox" onclick="buttonPushed('showSentItems');"/>
+                <input type="button" class="button" value="Show Sent Items" onclick="buttonPushed('showSentItems');"/>
                 <input type="button" class="button" value="Compose New Mail" onclick="buttonPushed('composeNewEmail');"/>
-                <input type="button" class="button" value="Logout"/>
+                <input type="button" class="button" style="float:right" value="Logout"/>
             </div>
 
             <div id="mailList" class="window fullScreen">
                 <table id="list">
+
                     <tr>
                         <th style="width:30px">From</th><th style="width:100px">Arrival Date:</th><th style="width:200px">  Subject</th><th style="width:50px">Actions</th>
+                    </tr>
+                    <tr>
+                        <td colspan="4">Loading...</td>
                     </tr>
                 </table>
             </div>
