@@ -8,6 +8,7 @@
 </head>
 <body>
 	<div id="container" class="clientArea">
+
             <div id="toolbar" class="window">
                 <div id="userDetails">Show user name here</div>
                 <input type="button" class="button" value="Show MailBox" onclick="buttonPushed('backToMailbox');"/>
@@ -71,7 +72,7 @@
                         window.location.href = 'welcome.html';
                     }
                     else {
-                        $('#userDetails').html(data);
+                        $('#userDetails').html("Welcome Back " + data + "!");
                     }
                 }
             });
@@ -97,7 +98,7 @@
                     data: $(this).serialize(),
                     success: function (data, status) {
                         //alert(data);
-                        if (status) {
+                        if (status === "success") {
                             alert('Your email has been successfully sent.');//TODO can remove this and just print a message on the mail.html page. alerts are annoying.
                             buttonPushed('backToMailbox');
                         } else {
