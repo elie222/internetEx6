@@ -26,11 +26,13 @@ exports.callBack = {call: function (request, response, parameters) {
             sender.lastName =  request.getPublicMemory().users[mails[mail].from].details.lastName;
             //console.log(request.getPublicMemory().users[mails[mail].from].details.lastName);
             console.log(mails[mail]);
-            output += "<tr>" +
-                "<td>"+sender.firstName+"   "+sender.lastName + "</td>" +
-                "<td>("+mails[mail].arrivalDate.toUTCString()   +")</td>"+
-                "<td>"+ mails[mail].subject+"</td>" +
-                "<td>TODO: delete button, reply button, show email button</td>" +
+            output +=
+                "<tr>" +
+                    "<td>"+sender.firstName+"   "+sender.lastName + "</td>" +
+                    //"<td>("+mails[mail].arrivalDate.toUTCString()   +")</td>"+
+                    "<td>TODO: UTC TIME</td>" +
+                    "<td>"+ mails[mail].subject+"</td>" +
+                    "<td>TODO: delete button, reply button, show email button</td>" +
                 "</tr>";
         }
         response.end(output);

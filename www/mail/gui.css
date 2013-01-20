@@ -135,6 +135,8 @@ table#list th
 
 table#list td
 {
+    font-family: Verdana;
+    font-size: 14px;
     color:blue;
 }
 

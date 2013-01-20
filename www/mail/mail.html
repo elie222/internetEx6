@@ -5,13 +5,18 @@
     <link rel="stylesheet" type="text/css" href="/mail/stylesheet.css" />
     <link rel="stylesheet" type="text/css" href="/mail/gui.css" />
     <link rel="stylesheet" type="text/css" href="/mail/include/jquery-ui.css" />
+    <!-- FOR DISPLAYING EMAILS -->
+    <script src="/mail/include/jquery.js"></script>
+    <script src="/mail/include/jquery-ui.js"></script>
+    <script src="/mail/mail.js"></script>
 </head>
 <body>
 	<div id="container" class="clientArea">
 
             <div id="toolbar" class="window">
-                <div id="userDetails">Show user name here</div>
+                <div id="userDetails"></div>
                 <input type="button" class="button" value="Show MailBox" onclick="buttonPushed('backToMailbox');"/>
+                <input type="button" class="button" value="Show MailBox" onclick="buttonPushed('showSentItems');"/>
                 <input type="button" class="button" value="Compose New Mail" onclick="buttonPushed('composeNewEmail');"/>
                 <input type="button" class="button" value="Logout"/>
             </div>
@@ -61,58 +66,6 @@
 	    }
 	</script>
 
-	<!-- FOR DISPLAYING EMAILS -->
-    <script src="/mail/include/jquery.js"></script>
-    <script src="/mail/include/jquery-ui.js"></script>
-    <script>
-        $(document).ready(function () {
-            $.post('/mail/mailList', {}, function (data, status) {
-                if(status === "success") {
-                    if(data === "FAIL") {
-                        window.location.href = 'welcome.html';
-                    }
-                    else {
-                        //$('#userDetails').html("Welcome Back " + data + "!"); //TODO what is this line?
-                        $('#list').append(data);
-                    }
-                }
-            });
 
-            $.get('/mail/getLoggedInUsername', function (data, status) {
-                if(status === "success") {
-                    $('#userDetails').html(data);
-                } else {
-                    console.log('ERROR getting currently logged in username!');
-                }
-            });
-
-            $("#sendEmailForm").submit(function (event){
-                //alert($(this).serialize());
-                event.preventDefault();
-
-                $.ajax({
-                    type: 'POST',
-                    url: '/mail/sendEmail',
-                    data: $(this).serialize(),
-                    success: function (data, status) {
-                        //alert(data);
-                        if (status === "success") {
-                            alert('Your email has been successfully sent.');//TODO can remove this and just print a message on the mail.html page. alerts are annoying.
-                            buttonPushed('backToMailbox');
-                        } else {
-                            alert('There was an error sending the email.\n' + data);
-                        }
-                    }
-                });
-            });
-
-            $(function() { 
-                $( "#people" ).autocomplete({
-                    source: "/mail/getAllUsers",
-                    minLength: 1
-                });
-            });
-        });
-    </script>
 </body>
 </html>
