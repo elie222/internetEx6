@@ -8,6 +8,11 @@
     <!-- FOR DISPLAYING EMAILS -->
     <script src="/mail/include/jquery.js"></script>
     <script src="/mail/include/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        window. mails = [];
+    </script>
+
     <script src="/mail/mail.js"></script>
 </head>
 <body>
@@ -51,24 +56,25 @@
                     </table>
                 </form>
             </div>
+
+            <div id="showMail" class="window fullScreen">
+                <table class="input">
+                    <tr style="height:50px">
+                        <td  style="width:100px" id="mailHeader"> </td>
+                    </tr>
+                    <tr style="height:20px">
+                        <td  style="width:100px" id="mailSubject"> </td>
+                    </tr>
+                    <tr style="height:300px">
+                        <td  style="width:100px" id="mailBody"> </td>
+                    </tr>
+
+                </table>
+            </div>
+
     </div>
 
-	<script type="text/javascript">
-	    function buttonPushed(button) {
-	        //console.log('HERE');
-	        if (button === 'composeNewEmail') {
-	            document.getElementById("composeDialog").style.display="block";
-                document.getElementById("mailList").style.display="none";
-	        }
-            else if (button === 'backToMailbox') {
-                document.getElementById("mailList").style.display="block";
-                document.getElementById("composeDialog").style.display="none";
-            }
-            else {
-	            console.log('not a button name');
-	        }
-	    }
-	</script>
+
 
 
 </body>

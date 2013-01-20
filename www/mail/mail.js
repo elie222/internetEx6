@@ -19,17 +19,22 @@ $(document).ready(function () {
                         $('#list').html(data);
                     }
                 }
+                else {
+                    window.location.href = 'welcome.html';
+                }
                 poll();
             });
         },REFRESH_RATE_SEC * 1000);
     })();
 
 
+
+
     $.get('/mail/getLoggedInUsername', function (data, status) {
         if(status === "success") {
             $('#userDetails').html('Welcome Back ' +data + '!');
         } else {
-            console.log('ERROR getting currently logged in username!');
+            window.location.href = "welcome.html";
         }
     });
 
@@ -60,3 +65,48 @@ $(document).ready(function () {
         });
     });
 });
+
+function readMail(id) {
+    //document.getElementById("readMail").style.display="block";
+    $(".fullScreen").hide();
+    $("#showMail").show();
+
+    // fill-in data:
+    $("#mailHeader").html("" +
+        "<table id='headerContent'>" +
+            "<tr>" +
+                "<td style='width:150px'><u>From:</u> </td><td>"+mails[id].from+"</td>" +
+            "</tr><tr>"+
+                "<td style='width:150px'><u>To:</u> </td><td>"+mails[id].to+"</td>" +
+             "</tr><tr>"+
+                "<td style='width:150px'><u>Arrival Time:</u> </td><td> TODO: Time</td>" +
+            "</tr>" +
+        "</table>" +
+        "");
+
+    $("#mailSubject").html("<div id='subjectContent'>"+mails[id].subject+"</div>");
+    $("#mailBody").html("<div id='bodyContent'>"+mails[id].body+"</div>");
+}
+
+function buttonPushed(button) {
+    //console.log('HERE');
+    if (button === 'composeNewEmail') {
+        /*
+        document.getElementById("composeDialog").style.display="block";
+        document.getElementById("mailList").style.display="none";
+        */
+        $(".fullScreen").hide();
+        $("#composeDialog").show();
+    }
+    else if (button === 'backToMailbox') {
+        /*
+        document.getElementById("mailList").style.display="block";
+        document.getElementById("composeDialog").style.display="none";
+        */
+        $(".fullScreen").hide();
+        $("#mailList").show();
+    }
+    else {
+        console.log('not a button name');
+    }
+}
