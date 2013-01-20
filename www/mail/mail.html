@@ -66,25 +66,26 @@
     <script src="/mail/include/jquery-ui.js"></script>
     <script>
         $(document).ready(function () {
-            $.get('/mail/getLoggedInUsername', function (data, status) {
-                if(status === "success") {
-                    if(data === "FAIL") {
-                        window.location.href = 'welcome.html';
-                    }
-                    else {
-                        $('#userDetails').html("Welcome Back " + data + "!");
-                    }
-                }
-            });
-
             $.post('/mail/mailList', {}, function (data, status) {
                 if(status === "success") {
                     if(data === "FAIL") {
                         window.location.href = 'welcome.html';
                     }
                     else {
+<<<<<<< HEAD
+                        $('#userDetails').html("Welcome Back " + data + "!");
+=======
                         $('#list').append(data);
+>>>>>>> moved things around. our system is very slow. often pages dont load fully
                     }
+                }
+            });
+
+            $.get('/mail/getLoggedInUsername', function (data, status) {
+                if(status === "success") {
+                    $('#userDetails').html(data);
+                } else {
+                    console.log('ERROR getting currently logged in username!');
                 }
             });
 
@@ -97,9 +98,14 @@
                     url: '/mail/sendEmail',
                     data: $(this).serialize(),
                     success: function (data, status) {
+<<<<<<< HEAD
                         //alert(data);
                         if (status === "success") {
                             alert('Your email has been successfully sent.');//TODO can remove this and just print a message on the mail.html page. alerts are annoying.
+=======
+                        if (status === 'success') {
+                            //alert('Your email has been successfully sent.');//TODO can remove this and just print a message on the mail.html page. alerts are annoying.
+>>>>>>> changed one line. nothing really
                             buttonPushed('backToMailbox');
                         } else {
                             alert('There was an error sending the email.\n' + data);
@@ -107,47 +113,14 @@
                     }
                 });
             });
+
+            $(function() { 
+                $( "#people" ).autocomplete({
+                    source: "/mail/getAllUsers",
+                    minLength: 1
+                });
+            });
         });
-    </script>
-  <script>
-  $(function() { 
-    $( "#people" ).autocomplete({
-      source: "/mail/getAllUsers",
-      minLength: 1
-    });
-  });
-  </script>
-    <script>
-        //$(function() {
-        //     var availableTagsOrig = [
-        //       "ActionScript",
-        //       "AppleScript",
-        //       "Asp",
-        //       "BASIC",
-        //       "C",
-        //       "C++",
-        //       "Clojure",
-        //       "COBOL",
-        //       "ColdFusion",
-        //       "Erlang",
-        //       "Fortran",
-        //       "Groovy",
-        //       "Haskell",
-        //       "Java",
-        //       "JavaScript",
-        //       "Lisp",
-        //       "Perl",
-        //       "PHP",
-        //       "Python",
-        //       "Ruby",
-        //       "Scala",
-        //       "Scheme"
-        //     ];
-        //     var availableTags = [];
-        //     $( "#people" ).autocomplete({
-        //         source: availableTags
-        //     });
-        // });
     </script>
 </body>
 </html>

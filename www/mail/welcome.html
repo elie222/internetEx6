@@ -4,7 +4,6 @@
     <title>Mail Application Login Screen</title>
     <link rel="stylesheet" type="text/css" href="/mail/stylesheet.css" />
     <link rel="stylesheet" type="text/css" href="/mail/login.css" />
-    <script src="/mail/include/jquery.js"></script>
 </head>
 <body>
 
@@ -69,24 +68,11 @@
             </table>
 
             <input type="button" class="button navigation"  value="Go To Login" onclick="buttonPushed('goToLogin');"/>
-
-
         </form>
-            <!--
-            Username: <input type="text" name="username"><br>
-            Password: <input type="password" name="password"><br>
-            First Name: <input type="text" name="firstname"><br>
-            Surname: <input type="text" name="surname"><br>
-            Age: <input type="text" name="age"><br>
-            <input type="submit" value="Register">
-        </form>
-        <input type="button" value="Go To Login" onclick="buttonPushed('goToLogin');"/>
-        -->
     </div>
-
 </div>
 
-
+<script src="/mail/include/jquery.js"></script>
 <script type="text/javascript">
     function buttonPushed(button) {
         console.log('HERE');
@@ -103,7 +89,6 @@
 </script>
 
 <script type="text/javascript" >
-
         $(loginButton).click(function () {
             $.post('login',$(loginForm).serialize(),function (data,status) {
                 if(status === 'success') {
@@ -119,7 +104,6 @@
 
         });
 
-
        $(registerButton).click(function () {
             $.post('register',$(registerForm).serialize(),function (data,status) {
                 if(status === 'success') {
@@ -134,8 +118,6 @@
             });
 
         });
-
-
 </script>
 
 </body>
