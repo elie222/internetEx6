@@ -93,6 +93,7 @@
             $.post('login',$(loginForm).serialize(),function (data,status) {
                 if(status === 'success') {
                     if(data === 'OK') {
+                        console.log('HEREEEE');
                         window.location.href = '/mail/mail.html';
                     }
                     else {
