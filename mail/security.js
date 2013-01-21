@@ -19,7 +19,7 @@ exports.callBack = {call : function(request,response,parameters) {
             response.end('');
         }
         else {
-            response.sendStaticPage('mail/mail.html',function () {
+            response.sendStaticPage('/mail/mail.html',function () {
                 response.end('');
             });
         }
