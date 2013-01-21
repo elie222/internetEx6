@@ -10,72 +10,65 @@
     <script src="/mail/include/jquery-ui.js"></script>
 
     <script type="text/javascript">
-        window. mails = [];
+        window.mails = [];
     </script>
 
     <script src="/mail/mail.js"></script>
 </head>
 <body>
 	<div id="container" class="clientArea">
+        <div id="toolbar" class="window">
+            <div id="userDetails">Loading...</div>
+            <input type="button" class="button" value="Show MailBox" onclick="buttonPushed('backToMailbox');"/>
+            <input type="button" class="button" value="Show Sent Items" onclick="buttonPushed('showSentItems');"/>
+            <input type="button" class="button" value="Compose New Mail" onclick="buttonPushed('composeNewEmail');"/>
+            <input type="button" class="button" style="float:right" value="Logout"/>
+        </div>
 
-            <div id="toolbar" class="window">
-                <div id="userDetails">Loading...</div>
-                <input type="button" class="button" value="Show MailBox" onclick="buttonPushed('backToMailbox');"/>
-                <input type="button" class="button" value="Show Sent Items" onclick="buttonPushed('showSentItems');"/>
-                <input type="button" class="button" value="Compose New Mail" onclick="buttonPushed('composeNewEmail');"/>
-                <input type="button" class="button" style="float:right" value="Logout"/>
-            </div>
+        <div id="mailList" class="window fullScreen">
+            <table id="list">
 
-            <div id="mailList" class="window fullScreen">
-                <table id="list">
+                <tr>
+                    <th style="width:30px">From</th><th style="width:100px">Arrival Date:</th><th style="width:200px">  Subject</th><th style="width:50px">Actions</th>
+                </tr>
+                <tr>
+                    <td colspan="4">Loading...</td>
+                </tr>
+            </table>
+        </div>
 
-                    <tr>
-                        <th style="width:30px">From</th><th style="width:100px">Arrival Date:</th><th style="width:200px">  Subject</th><th style="width:50px">Actions</th>
-                    </tr>
-                    <tr>
-                        <td colspan="4">Loading...</td>
-                    </tr>
-                </table>
-            </div>
-
-            <div id="composeDialog" class="window fullScreen">
-                <form id="sendEmailForm">
-                    <table class="input">
-                        <tr style="height:50px">
-                            <td style="width:100px">To: </td><td><input id="people" class="input" type="text" name="to"></td>
-                        </tr>
-                        <tr style="height:50px">
-                            <td  style="width:100px">Subject: </td><td><input class="input" type="text" name="subject"></td>
-                        </tr>
-                        <tr>
-                            <td  style="width:100px">Body: </td><td><textarea class="input" name="body" ></textarea></td>
-                        </tr>
-                        <tr style="height:50px; text-align: center" >
-                           <td colspan="2" style="width:50px"><input type="submit" class="button" value="Send"> </td>
-                        </tr>
-                    </table>
-                </form>
-            </div>
-
-            <div id="showMail" class="window fullScreen">
+        <div id="composeDialog" class="window fullScreen">
+            <form id="sendEmailForm">
                 <table class="input">
                     <tr style="height:50px">
-                        <td  style="width:100px" id="mailHeader"> </td>
+                        <td style="width:100px">To: </td><td><input id="people" class="input" type="text" name="to"></td>
                     </tr>
-                    <tr style="height:20px">
-                        <td  style="width:100px" id="mailSubject"> </td>
+                    <tr style="height:50px">
+                        <td  style="width:100px">Subject: </td><td><input class="input" type="text" name="subject"></td>
                     </tr>
-                    <tr style="height:300px">
-                        <td  style="width:100px" id="mailBody"> </td>
+                    <tr>
+                        <td  style="width:100px">Body: </td><td><textarea class="input" name="body" ></textarea></td>
                     </tr>
-
+                    <tr style="height:50px; text-align: center" >
+                       <td colspan="2" style="width:50px"><input type="submit" class="button" value="Send"> </td>
+                    </tr>
                 </table>
-            </div>
+            </form>
+        </div>
 
+        <div id="showMail" class="window fullScreen">
+            <table class="input">
+                <tr style="height:50px">
+                    <td  style="width:100px" id="mailHeader"> </td>
+                </tr>
+                <tr style="height:20px">
+                    <td  style="width:100px" id="mailSubject"> </td>
+                </tr>
+                <tr style="height:300px">
+                    <td  style="width:100px" id="mailBody"> </td>
+                </tr>
+            </table>
+        </div>
     </div>
-
-
-
-
 </body>
 </html>
