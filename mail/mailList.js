@@ -64,7 +64,7 @@ exports.getAllUsersCallback = {call: function (request, response, parameters) {
     var usersToReturn = [];
     var allUsers = Object.keys(request.getPublicMemory().users);
     //console.log('allUsers: ' + allUsers);
-    allUsers.splice(allUsers.indexOf(login.validate(request,response)),1);
+    //allUsers.splice(allUsers.indexOf(login.validate(request,response)),1);//FOR REMOVING CURRENTLY LOGGED IN USER FROM THE RETURNED LIST.
     //console.log('allUsers with sender: ' + allUsers);
     //console.log('request.parameters.term: ' + request.parameters.term);
     for (var i=0; i<allUsers.length; ++i) {
