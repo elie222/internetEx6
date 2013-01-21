@@ -108,6 +108,7 @@ server.onStart(function () {
 	server.post('/mail/login', mail.login.callBack);
 	server.post('/mail/register', mail.register.callBack);
 	server.post('/mail/sendEmail', mail.sendMail.callBack);
+    server.post('/mail/deleteMail',mail.deleteMail.callBack);
     server.any('/mail/mailList', mail.mailList.callBack);
 
     /* debug */

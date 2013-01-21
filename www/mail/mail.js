@@ -66,6 +66,22 @@ $(document).ready(function () {
     });
 });
 
+
+function deleteMail(id) {
+    alert("here")
+    $.post('/mail/deleteMail',{id: id}, function (data,status) {
+        if(status === 'success') {
+            if('data' === 'FAIL') {
+                window.location.href = "welcome.html";
+            }
+        }
+        else {
+            window.location.href = "welcome.html";
+        }
+    });
+}
+
+
 function readMail(id) {
     //document.getElementById("readMail").style.display="block";
     $(".fullScreen").hide();
