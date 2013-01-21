@@ -12,8 +12,8 @@ var mail = require('./mail/include');
 
 
 
-//var rootFolder = 'C:\\Users\\LEO\\Documents\\HUJI\\Internet Technologies\\hw6\\internetEx6\\www';
-var rootFolder = '/Users/Elie2/WebstormProjects/internetEx6/www';
+var rootFolder = 'C:\\Users\\LEO\\Documents\\HUJI\\Internet Technologies\\hw6\\internetEx6\\www';
+//var rootFolder = '/Users/Elie2/WebstormProjects/internetEx6/www';
 //var rootFolder ='D:\\Leonid\\internet\\hw6\\internetEx6\\www';
 
 
@@ -110,6 +110,7 @@ server.onStart(function () {
 	server.post('/mail/sendEmail', mail.sendMail.callBack);
     server.post('/mail/deleteMail',mail.deleteMail.callBack);
     server.any('/mail/mailList', mail.mailList.callBack);
+    server.any('/mail/logout',mail.logout.callBack);
 
     /* debug */
 	server.get('/mail/publicMemory.html', seePublicMemoryCallbackObj);

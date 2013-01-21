@@ -52,5 +52,7 @@ function validate(request,response) {
     return currentSession['mailUser'];
 }
 
+
+
 exports.success = success;
 exports.validate = validate;
