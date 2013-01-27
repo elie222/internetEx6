@@ -45,23 +45,12 @@
     color: white;
 }
 
-#composeDialog
+#composeDialog, #showMail
 {
     position: relative;
     display: block;
     width: 80%;
     display: none;
-    /*center align div*/
-    margin: 0px auto;
-    margin-bottom: 10px;
-}
-
-#showMail
-{
-    display: none;
-    position: relative;
-    display: block;
-    width: 80%;
     /*center align div*/
     margin: 0px auto;
     margin-bottom: 10px;
