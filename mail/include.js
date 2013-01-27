@@ -12,3 +12,4 @@ exports.security = require('./security');
 exports.mailList  = require('./mailList');
 exports.deleteMail = require('./deleteMail');
 exports.logout = require('./logout');
+exports.getInfo = require('./getInfo');

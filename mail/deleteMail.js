@@ -7,14 +7,14 @@
  */
 var login = require('./login');
 exports.callBack = { call : function (request,response,parameters) {
-    console.log("here");
+    //console.log("here");
     var currentUser = login.validate(request,response);
     if(!currentUser) {
         response.end('FAIL');
     }
-    console.log("here2");
+    //console.log("here2");
     var mails = request.getPublicMemory().users[currentUser].mails;
-    console.log("here3");
+    //console.log("here3");
     var requestId = parseInt(request.parameters['id']);
     console.log('delete mail for: ' + currentUser + ' ' + mails.length + ' ' + requestId);
     if(!request.parameters['id']) {
@@ -26,5 +26,4 @@ exports.callBack = { call : function (request,response,parameters) {
 
     mails.splice(requestId,1);
     response.end('OK');
-
 }};

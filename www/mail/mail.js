@@ -51,6 +51,10 @@ $(document).ready(function () {
                 if (status === "success") {
                     //alert('Your email has been successfully sent.');//TODO can remove this and just print a message on the mail.html page. alerts are annoying.
                     buttonPushed('backToMailbox');
+                    //this resets the compose mail form for the next email
+                    $("input[name=to]").val('');
+                    $("input[name=subject]").val('');
+                    $("textarea[name=body]").val('');
                 } else {
                     alert('There was an error sending the email.\n' + data);
                 }
@@ -83,7 +87,6 @@ function deleteMail(id) {
 
 
 function readMail(id) {
-    //document.getElementById("readMail").style.display="block";
     $(".fullScreen").hide();
     $("#showMail").show();
 
@@ -104,25 +107,22 @@ function readMail(id) {
     $("#mailBody").html("<div id='bodyContent'>"+mails[id].body+"</div>");
 }
 
-function buttonPushed(button) {
-    //console.log('HERE');
+function replyMail(id) {
+    $(".fullScreen").hide();
+    $("#composeDialog").show();
+    $("input[name=to]").val(mails[id].fromUsername);
+}
+
+function buttonPushed(button, id) {
+    //console.log('button pushed!');
     if (button === 'composeNewEmail') {
-        /*
-        document.getElementById("composeDialog").style.display="block";
-        document.getElementById("mailList").style.display="none";
-        */
         $(".fullScreen").hide();
         $("#composeDialog").show();
     }
     else if (button === 'backToMailbox') {
-        /*
-        document.getElementById("mailList").style.display="block";
-        document.getElementById("composeDialog").style.display="none";
-        */
         $(".fullScreen").hide();
         $("#mailList").show();
-    }
-    else {
-        console.log('not a button name');
+    } else {
+        console.log(button+' is not a button name.');
     }
 }

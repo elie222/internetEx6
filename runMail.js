@@ -101,8 +101,8 @@ server.onStart(function () {
 	console.log('Mail server started.');
 
     /* static pages handlers */
-    server.any('/mail/mail.html',mail.security.callBack);
-    server.any('/mail/welcome.html',mail.security.callBack);
+    server.any('/mail/mail.html', mail.security.callBack);
+    server.any('/mail/welcome.html', mail.security.callBack);
 
     /* virtual pages handlers */
 	server.post('/mail/login', mail.login.callBack);
@@ -115,8 +115,10 @@ server.onStart(function () {
     /* debug */
 	server.get('/mail/publicMemory.html', seePublicMemoryCallbackObj);
 	server.get('/mail/emails', getEmailsCallbackObj);
-	server.get('/mail/getLoggedInUsername', mail.mailList.getUsernameCallback);//added this. is this okay?
-	server.get('/mail/getAllUsers', mail.mailList.getAllUsersCallback);
+
+
+	server.get('/mail/getLoggedInUsername', mail.getInfo.getUsernameCallback);
+	server.get('/mail/getAllUsers', mail.getInfo.getAllUsersCallback);
 });
 
 server.startServer(port);
