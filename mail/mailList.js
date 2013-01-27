@@ -34,7 +34,7 @@ exports.callBack = {call: function (request, response, parameters) {
                 "<tr>" +
                     "<td>"+sender.firstName+"   "+sender.lastName + "</td>" +
                     //"<td>("+mails[mail].arrivalDate.toUTCString()   +")</td>"+
-                    "<td>TODO: UTC TIME</td>" +
+                    "<td>"+mails[mail].arrivalDate+"</td>" +
                     "<td>"+ mails[mail].subject+"</td>" +
                     "<td>" +
                         "<script type='text/javascript'>window.mails["+mail+"] = {"+

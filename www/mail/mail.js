@@ -95,7 +95,7 @@ function readMail(id) {
             "</tr><tr>"+
                 "<td style='width:150px'><u>To:</u> </td><td>"+mails[id].to+"</td>" +
              "</tr><tr>"+
-                "<td style='width:150px'><u>Arrival Time:</u> </td><td> TODO: Time</td>" +
+                "<td style='width:150px'><u>Arrival Time:</u> </td><td>"+mails[id].arrivalDate+"</td>" +
             "</tr>" +
         "</table>" +
         "");

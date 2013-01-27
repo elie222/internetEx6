@@ -14,7 +14,7 @@ exports.callBack = {call: function (request, response, parameters) {
         to: request.parameters.to,
         subject: request.parameters.subject,
         body: request.parameters.body,
-        arrivalDate: ''//TODO
+        arrivalDate: new Date()
     };
     //console.log('Sending emailObj:');
     //console.log(emailObj);
