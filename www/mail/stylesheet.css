@@ -11,9 +11,6 @@ body
     padding: 0px;
 }
 
-
-
-
 .button
 {
     background-color:white;
@@ -22,7 +19,6 @@ body
     font-family: cursive;
     border-style:outset;
     border-width: 3px;
-
 }
 
 .smallBox
@@ -34,8 +30,7 @@ body
 .window
 {
     display: block;
-    position: absolute;
-
+    position: relative;
 
     border-style:double;
     border-color:orange;
@@ -46,11 +41,9 @@ body
 
     font-family: cursive;
 
-
     padding: 10px;
 
     text-align: center;
-
 }
 
 .frame
@@ -63,9 +56,8 @@ body
 
 .navigation
 {
-    position: absolute;
-    right: 5px;;
-    bottom: 5px;
+/*    position: relative;
+    bottom: 5px;*/
 }
 
 #errorMessage
@@ -77,4 +69,6 @@ body
 {
     font-family: cursive;
     font-size: 24px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
