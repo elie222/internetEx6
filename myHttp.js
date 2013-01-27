@@ -57,7 +57,8 @@ function createHTTPServer(pResourceMap, pRootFolder) {
             "jpeg" : "image/jpeg",
             "gif" : "image/gif",
             "png" :"image/png",
-            "ico" : "image/vnd.microsoft.icon"
+            "ico" : "image/vnd.microsoft.icon",
+            "manifest" : "text/cache-manifest"
         };
 
         /******************/
