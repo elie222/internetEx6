@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 var REFRESH_RATE_SEC = 1;// TODO: use settings.js or something...
-var RETRY_SENDING_EMAILS_SEC = 30;
+var RETRY_SENDING_EMAILS_SEC = 3;
 
 function supports_html5_storage() {
     try {
@@ -38,10 +38,6 @@ $(document).ready(function () {
                     }
                     else {
                         $('#list').html(data);
-                        // //save data for offline mode
-                        // if (supports_html5_storage) {
-                        //     localStorage['mails'] = mails;//TODO can the data be sent in chunks? if yes, then this won't work properly.
-                        // }
                     }
                 }
                 else {
@@ -79,13 +75,25 @@ $(document).ready(function () {
                 //save emails
                 if (supports_html5_storage) {
                     console.log('Storing emails locally.');
-                    if (localStorage['noOfEmailsToSend'] === 'NaN') {
-                        localStorage['noOfEmailsToSend'] = 0;
+                    var emailsArray = [];
+                    var email = {
+                        to: $("input[name=to]").val(),
+                        subject: $("input[name=subject]").val(),
+                        body: $("textarea[name=body]").val()
+                    };
+                    if (localStorage['emailsArray']) {
+                        var emailsArray = JSON.parse(localStorage['emailsArray']);
                     }
-                    localStorage['noOfEmailsToSend'] = parseInt(localStorage['noOfEmailsToSend']) + 1
-                    localStorage['emailsToSend.' + localStorage['noOfEmailsToSend'] + '.to'] = $("input[name=to]").val();
-                    localStorage['emailsToSend.' + localStorage['noOfEmailsToSend'] + '.subject'] = $("input[name=subject]").val();
-                    localStorage['emailsToSend.' + localStorage['noOfEmailsToSend'] + '.body'] = $("textarea[name=body]").val();
+                    emailsArray.push(email);
+                    localStorage['emailsArray'] = JSON.stringify(emailsArray);
+
+                    // if (!localStorage['noOfEmailsToSend']) {
+                    //     localStorage['noOfEmailsToSend'] = 0;
+                    // }
+                    // localStorage['emailsToSend.' + localStorage['noOfEmailsToSend'] + '.to'] = $("input[name=to]").val();
+                    // localStorage['emailsToSend.' + localStorage['noOfEmailsToSend'] + '.subject'] = $("input[name=subject]").val();
+                    // localStorage['emailsToSend.' + localStorage['noOfEmailsToSend'] + '.body'] = $("textarea[name=body]").val();
+                    // localStorage['noOfEmailsToSend'] = parseInt(localStorage['noOfEmailsToSend']) + 1;
 
                     buttonPushed('backToMailbox');
                     //this resets the compose mail form for the next email
@@ -96,36 +104,44 @@ $(document).ready(function () {
                     alert('There was an error sending the email. Browser doesn\'t support HTML5 storage');
                 }
 
-                //try sending the emails every 30 secs till successfully sent. Then delete email from local storage
+                //try sending the emails every 3 secs till successfully sent. Then delete email from local storage
                 (function sendOfflineEmails() {
                     setTimeout(function () {
                         console.log('Attempting to send all offline emails.');
-                        for (var i = 0; i < parseInt(localStorage['noOfEmailsToSend']); i++) {
+                        var oldEmailsArray = [];
+                        var newEmailsArray = [];
+                        var poppedEmail = {};
+                        if (localStorage['emailsArray']) {
+                            var oldEmailsArray = JSON.parse(localStorage['emailsArray']);
+                        }
+                        while (oldEmailsArray.length!==0) {
+                            //console.log('oldEmailsArray: ' + JSON.stringify(oldEmailsArray));
+                            poppedEmail = oldEmailsArray.shift();
+                            //console.log('oldEmailsArray.length: ' + oldEmailsArray.length);
+                            //console.log('poppedEmail: ' + JSON.stringify(poppedEmail));
                             $.ajax({
                                 type: 'POST',
                                 url: '/mail/sendEmail',
-                                data: {
-                                    to: localStorage['emailsToSend.' + i + '.to'],
-                                    subject: localStorage['emailsToSend.' + i + '.subject'],
-                                    body: localStorage['emailsToSend.' + i + '.body'],
-                                },
+                                data: poppedEmail,
+                                async: false,
                                 success: function (data, status) {
                                     if (status === 'success') {
-                                        console.log('Successfully sent offline email. Deleting local storage of email.');
-                                        //remove email from local storage
-                                        localStorage.removeItem('emailsToSend.' + i + '.to');
-                                        localStorage.removeItem('emailsToSend.' + i + '.subject');
-                                        localStorage.removeItem('emailsToSend.' + i + '.body');
-                                        localStorage['noOfEmailsToSend'] = parseInt(localStorage['noOfEmailsToSend']) - 1;                                    
+                                        console.log('Successfully sent offline email. Deleting local storage of email.');                                  
                                     }
                                 },
                                 error: function (xhr, textStatus, error) {
-                                    //try sending again in another 30 seconds.
-                                    console.log('Failed to send offline emails. Will retry in 30 seconds.');
-                                    sendOfflineEmails();
-                                }//,
-                                //timeout: 1000. don't think the timeout works.
+                                    //console.log('push');
+                                    newEmailsArray.push(poppedEmail);
+                                }
                             });
+                        }
+                        //console.log('newEmailsArray: ' + JSON.stringify(newEmailsArray));
+                        localStorage['emailsArray'] = JSON.stringify(newEmailsArray);
+                        
+                        if (newEmailsArray.length!==0) {
+                            //try sending again in another 3 seconds.
+                            console.log('Failed to send offline emails. Will retry in 3 seconds.');
+                            sendOfflineEmails();
                         }
                     }, RETRY_SENDING_EMAILS_SEC * 1000);
                 })();
@@ -133,12 +149,16 @@ $(document).ready(function () {
         });
     });
 
-    $(function() {
-        $( "#people" ).autocomplete({
-            source: "/mail/getAllUsers",
-            minLength: 1
+    try {
+        $(function() {
+            $( "#people" ).autocomplete({
+                source: "/mail/getAllUsers",
+                minLength: 1
+            });
         });
-    });
+    } catch (e) {
+
+    }
 });
 
 function deleteMail(id) {

@@ -9,13 +9,13 @@ var mail = require('./include');
 
 function XSSDefence(str) {
     //console.log('XSSDefence');
-    str = str.replace(/\</g,"lt;")   //for <
-    str = str.replace(/\>/g,"gt;")   //for >
+    // str = str.replace(/\</g,"lt;")   //for <
+    // str = str.replace(/\>/g,"gt;")   //for >
     return str;
 }
 
 exports.callBack = {call: function (request, response, parameters) {
-    //console.log(request);
+    console.log(request);
     console.log('SENDMAIL CALLBACK');
     var emailObj = {
         from: mail.login.validate(request, response),
