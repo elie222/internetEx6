@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Read Me</title>
+</head>
+<body>
+	<h1>How to run the mail server</h1>
+	<p>Type node runMail.js into the shell. The mail server will now be up and running on port 8888.</p>
+	<p>Visit localhost:8888/mail/welcome.html and the rest is self-explanatory. You can login or register and then send/receive emails to/from other users of the mail system.</p>
+	<p>Note: You need to change the servers root folder (in runMail.js) for the server to run on another machine.</p>
+	<h1>How the server works behind the scenes</h1>
+	<p>The server is started by running runServer.js. This creates a server object, defines multiple callbacks to be used as part of the mail application and then starts the server. The callbacks we defined allow the client to interact with the server. The callbacks handle pretty much everything.</p>
+</body>
+</html>
