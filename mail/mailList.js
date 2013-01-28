@@ -9,7 +9,7 @@ var login = require('./login');
 
 exports.callBack = {call: function (request, response, parameters) {
     var currentUser = login.validate(request,response);
-    console.log("currentUser: " + currentUser);
+    console.log("In mailList.js. CurrentUser: " + currentUser);
     var mails = null;
     var output = "<tr><th style=\"width:30px\">From</th><th style=\"width:100px\">Arrival Date:</th><th style=\"width:200px\">  Subject</th><th style=\"width:50px\">Actions</th></tr>";
     var sender = {};

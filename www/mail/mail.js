@@ -17,6 +17,17 @@ function supports_html5_storage() {
 }
 
 $(document).ready(function () {
+    $.get('/mail/getLoggedInUsername', function (data, status) {
+        //console.log('getLoggedInUsername working!');
+        if(status === "success") {
+            $('#userDetails').html('Welcome Back ' + data + '!');//TODO atm data is the username. We can change this to the user's first name.
+        } else {
+            window.location.href = "welcome.html";
+        }
+    }).fail(function (xhr, textStatus, errorThrown) {
+        //alert('FAILLLL!!');
+    });
+
     (function poll() {
         setTimeout(function () {
             console.log('poll');
@@ -42,17 +53,6 @@ $(document).ready(function () {
             });
         }, REFRESH_RATE_SEC * 1000);
     })();
-
-    $.get('/mail/getLoggedInUsername', function (data, status) {
-        //console.log('getLoggedInUsername working!');
-        if(status === "success") {
-            $('#userDetails').html('Welcome Back ' + data + '!');//TODO atm data is the username. We can change this to the user's first name.
-        } else {
-            window.location.href = "welcome.html";
-        }
-    }).fail(function (xhr, textStatus, errorThrown) {
-        //alert('FAILLLL!!');
-    });
 
     $("#sendEmailForm").submit(function (event){
         //alert($(this).serialize());

@@ -7,13 +7,21 @@
  */
 var mail = require('./include');
 
+function XSSDefence(str) {
+    //console.log('XSSDefence');
+    str = str.replace(/\</g,"lt;")   //for <
+    str = str.replace(/\>/g,"gt;")   //for >
+    return str;
+}
+
 exports.callBack = {call: function (request, response, parameters) {
     //console.log(request);
+    console.log('SENDMAIL CALLBACK');
     var emailObj = {
         from: mail.login.validate(request, response),
-        to: request.parameters.to,
-        subject: request.parameters.subject,
-        body: request.parameters.body,
+        to: XSSDefence(request.parameters.to),
+        subject: XSSDefence(request.parameters.subject),
+        body: XSSDefence(request.parameters.body),
         arrivalDate: new Date()
     };
     //console.log('Sending emailObj:');

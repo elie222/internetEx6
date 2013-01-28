@@ -1102,7 +1102,7 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                 }
 
                 function onSocketData(data) {
-                    console.log('---------data: ' + data);
+                    //console.log('---------data: ' + data);
                     //if shutting down, don't allow new requests:
                     if (!shuttingDown)
                         parseData(data);
