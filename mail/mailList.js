@@ -12,11 +12,12 @@ exports.callBack = {call: function (request, response, parameters) {
     console.log("currentUser " + currentUser);
     console.log('box: ' +parameters['box'] );
     var box = (parameters['box'] === 'inbox') ? 'mails' : 'sent';
-    console.log("In mailList.js. CurrentUser: " + currentUser);
+   // console.log("In mailList.js. CurrentUser: " + currentUser);
     var mails = null;
     var output = "<tr><th style=\"width:30px\">"+((box === 'mails')?('From'):('To'))+"</th><th style=\"width:100px\">Arrival Date:</th><th style=\"width:200px\">  Subject</th><th style=\"width:50px\">Actions</th></tr>";
     var sender = {};
     var receiver = {};
+    var firstRow = (box === 'mails') ? sender : receiver;
 
     if(!currentUser) {
         //console.log("here again");
@@ -33,13 +34,13 @@ exports.callBack = {call: function (request, response, parameters) {
             sender.username = request.getPublicMemory().users[mails[mail].from].details.username;
             sender.firstName = request.getPublicMemory().users[mails[mail].from].details.firstName;
             sender.lastName = request.getPublicMemory().users[mails[mail].from].details.lastName;
-            receiver.firstName = request.getPublicMemory().users[currentUser].details.firstName;
-            receiver.lastName = request.getPublicMemory().users[currentUser].details.lastName;
+            receiver.firstName = request.getPublicMemory().users[mails[mail].to].details.firstName;
+            receiver.lastName = request.getPublicMemory().users[mails[mail].to].details.lastName;
             //console.log(request.getPublicMemory().users[mails[mail].from].details.lastName);
             //console.log(mails[mail]);
             output +=
                 "<tr>" +
-                    "<td>"+sender.firstName+"   "+sender.lastName + "</td>" +
+                    "<td>"+firstRow.firstName+"   "+firstRow.lastName + "</td>" +
                     //"<td>("+mails[mail].arrivalDate.toUTCString()   +")</td>"+
                     "<td>"+mails[mail].arrivalDate+"</td>" +
                     "<td>"+ mails[mail].subject+"</td>" +

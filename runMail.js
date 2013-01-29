@@ -6,6 +6,14 @@
  * To change this template use File | Settings | File Templates.
  */
 
+/* TODO (tests)
+1. fix a bug where two users can be logged-on as one from the same session
+2. protect against session theft
+3. fix bug with partial page refresh
+
+
+ */
+
 
 var myHttp = require("./myHttp");
 var mail = require('./mail/include');
