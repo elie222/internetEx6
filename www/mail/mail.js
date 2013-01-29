@@ -152,16 +152,25 @@ $(document).ready(function () {
         });
     });
 
-    try {
-        $(function() {
-            $( "#people" ).autocomplete({
-                source: "/mail/getAllUsers",
-                minLength: 1
-            });
-        });
-    } catch (e) {
+    $(function() {
+        var cache = {};
+        $( "#people" ).autocomplete({
+            //source: "/mail/getAllUsers",
+            source: function (request, response) {
+                var term = request.term;
+                if (term in cache) {
+                    response(cache[term]);
+                    return;
+                }
 
-    }
+                $.getJSON("/mail/getAllUsers", request, function (data, status, xhr) {
+                    cache[term] = data;
+                    response(data);
+                });
+            },
+            minLength: 1
+        });
+    });
 });
 
 

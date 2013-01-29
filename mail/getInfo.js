@@ -20,5 +20,8 @@ exports.getAllUsersCallback = {call: function (request, response, parameters) {
         //console.log('FALSE');
     }
     //console.log('usersToReturn: ' + JSON.stringify(usersToReturn));
+    if (usersToReturn.length===0) {
+        usersToReturn.push('No user begins that starts with those letters.');
+    }
     response.end(JSON.stringify(usersToReturn));
 }};
