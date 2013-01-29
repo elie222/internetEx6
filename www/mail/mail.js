@@ -5,6 +5,7 @@
  * Time: 16:06
  * To change this template use File | Settings | File Templates.
  */
+var box = 'inbox';
 var REFRESH_RATE_SEC = 1;// TODO: use settings.js or something...
 var RETRY_SENDING_EMAILS_SEC = 3;
 
@@ -28,10 +29,12 @@ $(document).ready(function () {
         //alert('FAILLLL!!');
     });
 
+
     (function poll() {
         setTimeout(function () {
             console.log('poll');
-            $.post('/mail/mailList', {}, function (data, status) {
+           // $.post('/mail/mailList', {}, function (data, status) {
+            $.post('/mail/mailList/'+box, {}, function (data, status) {
                 if(status === "success") {
                     if(data === "FAIL") {
                         window.location.href = 'welcome.html';
@@ -161,7 +164,10 @@ $(document).ready(function () {
     }
 });
 
+
 function deleteMail(id) {
+    //alert("here")
+    //$.post('/mail/deleteMail',{id: id}, function (data,status) {
     alert("here")
     $.post('/mail/deleteMail',{id: id}, function (data, status) {
         if(status === 'success') {
@@ -209,6 +215,18 @@ function buttonPushed(button, id) {
         $("#composeDialog").show();
     }
     else if (button === 'backToMailbox') {
+        /*
+        document.getElementById("mailList").style.display="block";
+        document.getElementById("composeDialog").style.display="none";
+        */
+        box  = 'inbox';
+        $("#fromTo").text('From');
+        $(".fullScreen").hide();
+        $("#mailList").show();
+    }
+    else if(button === 'showSentItems') {
+        box  = 'outbox';
+        $("#fromTo").text('To');
         $(".fullScreen").hide();
         $("#mailList").show();
     } else {

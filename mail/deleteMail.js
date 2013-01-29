@@ -16,7 +16,7 @@ exports.callBack = { call : function (request,response,parameters) {
     var mails = request.getPublicMemory().users[currentUser].mails;
     //console.log("here3");
     var requestId = parseInt(request.parameters['id']);
-    console.log('delete mail for: ' + currentUser + ' ' + mails.length + ' ' + requestId);
+    //console.log('delete mail for: ' + currentUser + ' ' + mails.length + ' ' + requestId);
     if(!request.parameters['id']) {
         response.end('FAIL');
     }

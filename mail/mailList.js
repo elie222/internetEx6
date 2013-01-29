@@ -9,18 +9,25 @@ var login = require('./login');
 
 exports.callBack = {call: function (request, response, parameters) {
     var currentUser = login.validate(request,response);
+    console.log("currentUser " + currentUser);
+    console.log('box: ' +parameters['box'] );
+    var box = (parameters['box'] === 'inbox') ? 'mails' : 'sent';
     console.log("In mailList.js. CurrentUser: " + currentUser);
     var mails = null;
-    var output = "<tr><th style=\"width:30px\">From</th><th style=\"width:100px\">Arrival Date:</th><th style=\"width:200px\">  Subject</th><th style=\"width:50px\">Actions</th></tr>";
+    var output = "<tr><th style=\"width:30px\">"+((box === 'mails')?('From'):('To'))+"</th><th style=\"width:100px\">Arrival Date:</th><th style=\"width:200px\">  Subject</th><th style=\"width:50px\">Actions</th></tr>";
     var sender = {};
     var receiver = {};
+
     if(!currentUser) {
+        //console.log("here again");
         //console.log("here again");
         response.end('FAIL');
     }
     else {
         //console.log("here");
-        mails = request.getPublicMemory().users[currentUser].mails;
+        //mails = request.getPublicMemory().users[currentUser].mails;
+        //console.log("here");
+        mails = request.getPublicMemory().users[currentUser][box];
 
         for(var mail in mails) {
             sender.username = request.getPublicMemory().users[mails[mail].from].details.username;

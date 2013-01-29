@@ -20,7 +20,7 @@ exports.callBack = {call : function(request,response,parameters) {
         }
         else {
             response.sendStaticPage('/mail/mail.html',function () {
-                response.end('');
+                response.end("");
             });
         }
 
