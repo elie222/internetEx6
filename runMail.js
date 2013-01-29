@@ -10,6 +10,7 @@
 1. fix a bug where two users can be logged-on as one from the same session
 2. protect against session theft
 3. fix bug with partial page refresh
+4. fix css in "show mail" menu
 
 
  */

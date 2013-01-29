@@ -30,18 +30,24 @@ exports.callBack = {call: function (request, response, parameters) {
         //console.log("here");
         mails = request.getPublicMemory().users[currentUser][box];
 
+        mails.sort(function(a,b) {
+            return b.arrivalDate - a.arrivalDate;
+        });
+
+        //console.log("after sort" + mails[0].from);
         for(var mail in mails) {
+
             sender.username = request.getPublicMemory().users[mails[mail].from].details.username;
             sender.firstName = request.getPublicMemory().users[mails[mail].from].details.firstName;
             sender.lastName = request.getPublicMemory().users[mails[mail].from].details.lastName;
             receiver.firstName = request.getPublicMemory().users[mails[mail].to].details.firstName;
             receiver.lastName = request.getPublicMemory().users[mails[mail].to].details.lastName;
             //console.log(request.getPublicMemory().users[mails[mail].from].details.lastName);
-            //console.log(mails[mail]);
+            console.log(mails[mail].subject);
+
             output +=
                 "<tr>" +
                     "<td>"+firstRow.firstName+"   "+firstRow.lastName + "</td>" +
-                    //"<td>("+mails[mail].arrivalDate.toUTCString()   +")</td>"+
                     "<td>"+mails[mail].arrivalDate+"</td>" +
                     "<td>"+ mails[mail].subject+"</td>" +
                     "<td>" +
@@ -55,10 +61,11 @@ exports.callBack = {call: function (request, response, parameters) {
                         "};" +
                         "</script>" +
                         "<input type='button' class='button smallButton' value='Read' onclick='readMail("+mail+")'> " +
-                        "<input type='button' class='button smallButton' value='Delete' onclick='deleteMail("+mail+")'> " +
-                        "<input type='button' class='button smallButton' value='Reply' onclick='replyMail("+mail+")'> " +
+                       ( (box === 'mails') ? ("<input type='button' class='button smallButton' value='Delete' onclick='deleteMail("+mail+")'> "):("") )+
+                        ((box === 'mails') ? ("<input type='button' class='button smallButton' value='Reply' onclick='replyMail("+mail+")'> ") : ("") )+
                     "</td>" +
                 "</tr>";
+            console.log(output);
         }
         response.end(output);
     }
