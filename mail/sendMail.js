@@ -7,39 +7,50 @@
  */
 var mail = require('./include');
 
-function XSSDefence(str) {
-    //console.log('XSSDefence');
-    // str = str.replace(/\</g,"lt;")   //for <
-    // str = str.replace(/\>/g,"gt;")   //for >
-    return str;
+var tagBody = '(?:[^"\'>]|"[^"]*"|\'[^\']*\')*';
+
+var tagOrComment = new RegExp(
+    '<(?:'
+    // Comment body.
+    + '!--(?:(?:-*[^->])*--+|-?)'
+    // Special "raw text" elements whose content should be elided.
+    + '|script\\b' + tagBody + '>[\\s\\S]*?</script\\s*'
+    + '|style\\b' + tagBody + '>[\\s\\S]*?</style\\s*'
+    // Regular name
+    + '|/?[a-z]'
+    + tagBody
+    + ')>',
+    'gi');
+
+function removeTags(html) {
+  var oldHtml;
+  do {
+    oldHtml = html;
+    html = html.replace(tagOrComment, '');
+  } while (html !== oldHtml);
+  return html.replace(/</g, '&lt;');
 }
+
 
 exports.callBack = {call: function (request, response, parameters) {
     console.log(request);
     console.log('SENDMAIL CALLBACK');
     var emailObj = {
         from: mail.login.validate(request, response),
-        to: XSSDefence(request.parameters.to),
-        subject: XSSDefence(request.parameters.subject),
-        body: XSSDefence(request.parameters.body),
+        to: request.parameters.to,
+        subject: removeTags(request.parameters.subject),
+        body: removeTags(request.parameters.body),
         arrivalDate: new Date()
     };
-    //console.log('Sending emailObj:');
-    //console.log(emailObj);
-    if (request.getPublicMemory().users[emailObj.from]) {
-        //console.log('Sender exists.');
+
+    if (request.getPublicMemory().users[emailObj.from] && request.getPublicMemory().users[emailObj.to]) {
         request.getPublicMemory().users[emailObj.from].sent.push(emailObj);
-        if (request.getPublicMemory().users[emailObj.to]) {
-            //console.log('Receiver exists.');
-            request.getPublicMemory().users[emailObj.to].mails.push(emailObj);
-            response.status = 200;//TODO don't think this actually works though. automatically changes to 200 I think
-            response.end('Email sent. TODO change this.');
-            return;
-        } else {
-            console.log('ERROR sending email. Receiver ' + emailObj.to + ' does not exist.');
-        }
+        request.getPublicMemory().users[emailObj.to].mails.push(emailObj);
+        response.status = 200;//TODO don't think this actually works though. automatically changes to 200 I think
+        response.end('Email sent. TODO change this.');
+        return;
     } else {
-        console.log('ERROR sending email. Sender ' + emailObj.from + ' does not exist.');
+        console.log('ERROR sending email. Receiver: ' + emailObj.to + ' or sender: ' + emailObj.from + ' does not exist.');
     }
     response.status = 500;//TODO don't think this actually works though. automatically changes to 200 I think
     response.end('Sender or receiver does not exist.');
