@@ -5,7 +5,7 @@ var path = require('path');
 var util = require("util");
 var events = require("events");
 var querystring = require("querystring");
-var settings = require('./ex5/settings');
+var settings = require('./settings');
 var uuid = require("./uuid");
 /***************** TODO ************************
 
@@ -142,7 +142,7 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                 var sessionId = null;
                 // TODO: remove after debugging
                 var socketId = socketNum++;
-                console.log('Server connected at port: ' + port + '\n');
+                //console.log('Server connected at port: ' + port + '\n');
 
                 if(numOfCurrentRequests >= settings.MAX_REQUESTS) {
                     reportError(503,'Server overloaded - no more new connections accepted');
@@ -497,7 +497,7 @@ function createHTTPServer(pResourceMap, pRootFolder) {
 
                 /* responds to a request */
                 function respond(parsedData, callback) {
-                    //console.log('responding... socketId: ' + socketId);
+                    console.log('responding... socketId: ' + socketId);
 
                     var userCallBack = null;
                     var request = null;
@@ -516,45 +516,7 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                         return;
                     }
 
-/*                    if (parsedData.RequestURI === '/mail/login') {
-                        //check username and password. else return incorrect username/password message
-                        request = createRequestObject(parsedData);
-                        console.log('HERE!');
-                        console.log('username: ' + request.parameters.username);
-                        console.log('password: ' + request.parameters.password);
-
-                        //TODO change this
-                        if (true) {
-                            parsedData.RequestURI = '/mail/mail.html';
-                            staticResponse(parsedData, callback);
-                        } else {
-
-                        }
-
-                        return;
-                    }
-
-                    if (parsedData.RequestURI === '/mail/register') {
-                        //check username and password. else return incorrect username/password message
-                        request = createRequestObject(parsedData);
-                        console.log('HERE!');
-                        console.log('username: ' + request.parameters.username);
-                        console.log('password: ' + request.parameters.password);
-                        console.log('firstname: ' + request.parameters.firstname);
-                        console.log('surname: ' + request.parameters.surname);
-                        console.log('age: ' + request.parameters.age);
-
-                        //TODO change this
-                        if (true) {
-                            parsedData.RequestURI = '/mail/mail.html';
-                            staticResponse(parsedData, callback);
-                        } else {
-
-                        }
-
-                        return;
-                    }*/
-
+                    //check if requestURI matches key's format
                     function matches(key, requestURI) {
                         //remove leading and trailing whitespace
                         key = key.toString().trim();
@@ -568,12 +530,12 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                         }
 
                         //TODO Don't remove the / from the end of the string
-                        if (key.charAt(key.length-1)==='/') {
-                            key = key.slice(0, -1);//remove the / from the end of the string
-                        }
-                        if (requestURI.charAt(requestURI.length-1)==='/') {
-                            requestURI = requestURI.slice(0, -1);//remove the / from the end of the string
-                        }
+                        // if (key.charAt(key.length-1)==='/') {
+                        //     key = key.slice(0, -1);//remove the / from the end of the string
+                        // }
+                        // if (requestURI.charAt(requestURI.length-1)==='/') {
+                        //     requestURI = requestURI.slice(0, -1);//remove the / from the end of the string
+                        // }
 
                         var splitKey = key.split('/');
                         var splitRequestURI = requestURI.split('/');
@@ -655,11 +617,12 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                 }
 
                 function staticResponse(parsedData, callback) {
-
                     //console.log('Num of current requests:  '+ numOfCurrentRequests);
                     fileType = '';
                     requestedFile = (!resourceMap[parsedData.RequestURI]) ? parsedData.RequestURI : resourceMap[parsedData.RequestURI];
                     requestedFile = path.normalize(requestedFile);
+
+                    console.log('requestedFile is: ' + requestedFile);
 
                     if (requestedFile[0] !== path.sep) {
                         requestedFile =path.normalize('/' + requestedFile);
@@ -684,7 +647,7 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                         }
                         fs.stat(fileLocation, function (err, stat) {
                             if (err) {
-                                reportError(500,'Internal Server Error',callback);
+                                reportError(500,'Internal Server Error\nError is: ' + err.message,callback);
                                 return;
                             }
                             if (!stat.isFile()) {
@@ -1126,8 +1089,9 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                      */
                 }
 
-                function onSocketError() {
-                    console.log('Socket ('+ socketId+')Error\n');
+                function onSocketError(e) {
+                    console.log('Socket ('+ socketId+') Error\n');
+                    console.log('Error is: ' + e.message);
                     cleanUpAndClose();
                 }
 

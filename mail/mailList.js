@@ -36,10 +36,12 @@ exports.callBack = {call: function (request, response, parameters) {
 
         //console.log("after sort" + mails[0].from);
         for(var mail in mails) {
-
+            console.log('mails[mail]: ' + JSON.stringify(mails[mail]));
+            console.log('request.getPublicMemory().users[mails[mail].from]: ' + JSON.stringify(request.getPublicMemory().users[mails[mail].from]));
             sender.username = request.getPublicMemory().users[mails[mail].from].details.username;
             sender.firstName = request.getPublicMemory().users[mails[mail].from].details.firstName;
             sender.lastName = request.getPublicMemory().users[mails[mail].from].details.lastName;
+            console.log('request.getPublicMemory().users[mails[mail].to]: ' + JSON.stringify(request.getPublicMemory().users[mails[mail].to]));
             receiver.firstName = request.getPublicMemory().users[mails[mail].to].details.firstName;
             receiver.lastName = request.getPublicMemory().users[mails[mail].to].details.lastName;
             //console.log(request.getPublicMemory().users[mails[mail].from].details.lastName);
