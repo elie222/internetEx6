@@ -647,7 +647,8 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                         }
                         fs.stat(fileLocation, function (err, stat) {
                             if (err) {
-                                reportError(500,'Internal Server Error\nError is: ' + err.message,callback);
+                                reportError(500,'Internal Server Error');
+                                console.log('500 : Internal Server Error\nError is: ' + err.message,callback);
                                 return;
                             }
                             if (!stat.isFile()) {
@@ -659,8 +660,6 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                             writeFile(fileLocation,CONTENT_TYPES[fileType],stat.size, callback);
                         });
                     });
-
-
                 }
 
                 function writeStatus(callback) {
@@ -688,7 +687,7 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                             return;
                         }
 
-                        socket.write('\r\n' + content + '\r\n', function () {
+                        socket.write('\r\n' + content, function () {
                             cleanUpAndClose();
                             if (callback)
                                 callback();
@@ -699,14 +698,14 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                 /* report error and display an HTML on the screen */
                 function reportError(errorId, errorMessage, callback) {
                     //console.log('reporting error: ' + errorId + ' ' + errorMessage);
-                    var content = '<html><body><h1>' + errorId + ' : ' + errorMessage + '</h1></body></html>\r\n';
+                    var content = '<html><body><h1>' + errorId + ' : ' + errorMessage + '</h1></body></html>';
                     writeHeader(errorId,errorMessage,CONTENT_TYPES['html'],content.length, buildDefaultHeaders(), function () {
                         if (!socket.writable) {
                             isKeepAlive = false;
                             cleanUpAndClose();
                             return;
                         }
-                        socket.write('\r\n' + content + '\r\n', function () {
+                        socket.write('\r\n' + content, function () {
                             //isKeepAlive = false;
                             cleanUpAndClose();
                             if (callback)
@@ -747,9 +746,88 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                 }
 
                 /* outputs a file to the client browser */
+                // function writeFileWithoutPipe(fileLocation, contentType, fileSize, callback) {
+                //     var readStream = fs.createReadStream(fileLocation);
+                //     readStream.setEncoding();
+                //     var bodyContent = '';
+
+                //     // ReadStream event handlers //
+                //     function onStreamData(data) {
+                //         console.log(data);
+                //         bodyContent += data;
+                //     }
+
+                //     function onStreamEnd() {
+                //         if (!socket.writable) {
+                //             isKeepAlive = false;
+                //             cleanUpAndClose();
+                //             return;
+                //         }
+                //         console.log('Read a total of ' + fileSize + ' bytes from ' + fileLocation + '\n');
+                //         //socket.write('\r\n');
+
+                //         var headers  = buildDefaultHeaders();
+
+                //         var content = 'HTTP/1.1 200 OK\r\n';
+                //         if (!socket.writable) {
+                //             isKeepAlive = false;
+                //             cleanUpAndClose();
+                //             return;
+                //         }
+
+                //         numOfSuccessfulRequests++;
+
+                //         headers['Content-Type'] = contentType;
+                //         if (!headers['Host'])
+                //             headers['Host'] = socket.address().address;
+
+                //         for (var header in headers)
+                //             if (headers.hasOwnProperty(header) && headers[header])
+                //                 content += header + ': ' + headers[header] + '\r\n';
+
+                //         content += 'Content-Length: '+ bodyContent.length + '\r\n';
+
+                //         //console.log('response content:\n' + content);
+
+                //         //console.log('Content: ' + content);
+
+                //         socket.write(content);
+                //         socket.write(bodyContent);
+                //         cleanUpAndClose();
+                //         if (callback)
+                //             callback();
+                //     }
+
+                //     function onStreamClose() {
+                //         //console.log('File ' + fileLocation +' is closed.\n');
+                //     }
+
+                //     function onStreamError() {
+                //         console.log('Error reading the file... \n');
+                //         readStream.destroy();
+                //         reportError(500,"Unable to open file",callback);
+                //     }
+
+                //     function onStreamOpen() {
+                //         //console.log('Opening the file...\n');
+                //     }
+                //     // add event listeners
+                //     readStream.on('open',onStreamOpen);
+                //     readStream.on('data',onStreamData);
+                //     readStream.on('end',onStreamEnd);
+                //     readStream.on('close',onStreamClose);
+                //     readStream.on('error',onStreamError);
+                // }
+
+
+                /* outputs a file to the client browser */
                 function writeFile(fileLocation, contentType, fileSize, callback) {
                     var readStream = fs.createReadStream(fileLocation);
                     // ReadStream event handlers //
+
+                    // function onStreamData() {
+                    //     var content = ;
+                    // }
 
                     function onStreamEnd() {
                         if (!socket.writable) {
@@ -757,8 +835,8 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                             cleanUpAndClose();
                             return;
                         }
-                        //console.log('Read a total of ' + fileSize + ' bytes from ' + fileLocation + '\n');
-                        socket.write('\r\n');
+                        console.log('Read a total of ' + fileSize + ' bytes from ' + fileLocation + '\n');
+                        //socket.write('\r\n');
                         cleanUpAndClose();
                         if (callback)
                             callback();
@@ -784,16 +862,18 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                     readStream.on('close',onStreamClose);
                     readStream.on('error',onStreamError);
 
-                    writeHeader(200,'OK',contentType,fileSize, buildDefaultHeaders(),  function () {
+                    writeHeader(200,'OK',contentType,fileSize, buildDefaultHeaders(), function () {
+                        console.log('writeHeader callback');
                         if (!socket.writable) {
                             isKeepAlive = false;
                             cleanUpAndClose();
                             return;
                         }
+                        console.log('contentType: ' + contentType);
+                        console.log('contentType: ' + fileSize);
                         socket.write('\r\n', function() {
                             readStream.pipe(socket,{end:false});
                         });
-
                     });
                 }
 

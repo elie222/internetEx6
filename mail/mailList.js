@@ -9,8 +9,8 @@ var login = require('./login');
 
 exports.callBack = {call: function (request, response, parameters) {
     var currentUser = login.validate(request,response);
-    console.log("currentUser " + currentUser);
-    console.log('box: ' +parameters['box'] );
+    //console.log("currentUser: " + currentUser);
+    //console.log('box: ' +parameters['box'] );
     var box = (parameters['box'] === 'inbox') ? 'mails' : 'sent';
    // console.log("In mailList.js. CurrentUser: " + currentUser);
     var mails = null;
@@ -36,16 +36,16 @@ exports.callBack = {call: function (request, response, parameters) {
 
         //console.log("after sort" + mails[0].from);
         for(var mail in mails) {
-            console.log('mails[mail]: ' + JSON.stringify(mails[mail]));
-            console.log('request.getPublicMemory().users[mails[mail].from]: ' + JSON.stringify(request.getPublicMemory().users[mails[mail].from]));
+            //console.log('mails[mail]: ' + JSON.stringify(mails[mail]));
+            //console.log('request.getPublicMemory().users[mails[mail].from]: ' + JSON.stringify(request.getPublicMemory().users[mails[mail].from]));
             sender.username = request.getPublicMemory().users[mails[mail].from].details.username;
             sender.firstName = request.getPublicMemory().users[mails[mail].from].details.firstName;
             sender.lastName = request.getPublicMemory().users[mails[mail].from].details.lastName;
-            console.log('request.getPublicMemory().users[mails[mail].to]: ' + JSON.stringify(request.getPublicMemory().users[mails[mail].to]));
+            //console.log('request.getPublicMemory().users[mails[mail].to]: ' + JSON.stringify(request.getPublicMemory().users[mails[mail].to]));
             receiver.firstName = request.getPublicMemory().users[mails[mail].to].details.firstName;
             receiver.lastName = request.getPublicMemory().users[mails[mail].to].details.lastName;
             //console.log(request.getPublicMemory().users[mails[mail].from].details.lastName);
-            console.log(mails[mail].subject);
+            //console.log(mails[mail].subject);
 
             output +=
                 "<tr>" +
@@ -67,7 +67,7 @@ exports.callBack = {call: function (request, response, parameters) {
                         ((box === 'mails') ? ("<input type='button' class='button smallButton' value='Reply' onclick='replyMail("+mail+")'> ") : ("") )+
                     "</td>" +
                 "</tr>";
-            console.log(output);
+            //console.log(output);
         }
         response.end(output);
     }
