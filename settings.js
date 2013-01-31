@@ -1,4 +1,4 @@
-exports.LAST_REQUEST_TIMEOUT_SEC = 2000;
+exports.LAST_REQUEST_TIMEOUT_SEC = 2;
 exports.DYNAMIC_REQUEST_TIMEOUT_SEC = 1;
 exports.MAX_STRING_LENGTH = 255;
 exports.MAX_HEADER_SIZE = 8192; // the header size is also 8KB

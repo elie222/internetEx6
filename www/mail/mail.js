@@ -5,6 +5,12 @@
  * Time: 16:06
  * To change this template use File | Settings | File Templates.
  */
+
+//note: localStorage['emailsArray'] are the user's unsent offline emails.
+//      localStorage['usersEmails.inbox'] is the user's received emails.
+//      localStorage['usersEmails.outbox'] is the user's sent emails.
+//      localStorage['loggedInUsername'] is the username of the logged in person. 
+
 var box = 'inbox';
 var REFRESH_RATE_SEC = 1;// TODO: use settings.js or something...
 var RETRY_SENDING_EMAILS_SEC = 3;
@@ -19,14 +25,22 @@ function supports_html5_storage() {
 
 $(document).ready(function () {
     $.get('/mail/getLoggedInUsername', function (data, status) {
-        //console.log('getLoggedInUsername working!');
         if(status === "success") {
+            if (supports_html5_storage()) {
+                localStorage['loggedInUsername'] = data;
+            }
             $('#userDetails').html('Welcome Back ' + data + '!');//TODO atm data is the username. We can change this to the user's first name.
         } else {
             window.location.href = "welcome.html";
         }
     }).fail(function (xhr, textStatus, errorThrown) {
-        //alert('FAILLLL!!');
+        if (supports_html5_storage()) {
+            if (localStorage['loggedInUsername']) {
+                $('#userDetails').html('Welcome Back ' + localStorage['loggedInUsername'] + '!');
+            } else {
+                window.location.href = "welcome.html";
+            }
+        }
     });
 
 
@@ -40,6 +54,9 @@ $(document).ready(function () {
                         window.location.href = 'welcome.html';
                     }
                     else {
+                        if (supports_html5_storage()) {
+                            localStorage['usersEmails.' + box] = data;
+                        }
                         $('#list').html(data);
                     }
                 }
@@ -48,13 +65,16 @@ $(document).ready(function () {
                 }
                 poll();
             }).fail(function (xhr, textStatus, errorThrown) {
-                //alert('FAILLLL!!');
+                if (supports_html5_storage()) {
+                    if (localStorage['usersEmails.'+box]) {
+                        $('#list').html(localStorage['usersEmails.'+box]);
+                    }
+                }
             });
         }, REFRESH_RATE_SEC * 1000);
     })();
 
     $("#sendEmailForm").submit(function (event){
-        //alert($(this).serialize());
         event.preventDefault();
 
         $.ajax({
@@ -62,10 +82,10 @@ $(document).ready(function () {
             url: '/mail/sendEmail',
             data: $(this).serialize(),
             success: function (data, status) {
-                //alert(data);
                 if (status === "success") {
                     //alert('Your email has been successfully sent.');//TODO can remove this and just print a message on the mail.html page. alerts are annoying.
                     buttonPushed('backToMailbox');
+
                     //this resets the compose mail form for the next email
                     $("input[name=to]").val('');
                     $("input[name=subject]").val('');
@@ -75,6 +95,7 @@ $(document).ready(function () {
                 }
             },
             error: function (xhr, textStatus, error) {
+                alert('There was a problem sending the email because you are offline. We\'ll retry to send the email every ' + RETRY_SENDING_EMAILS_SEC + ' seconds.\nYou will receive an alert when all your offline emails have been successfully sent.');
                 //save emails
                 if (supports_html5_storage) {
                     console.log('Storing emails locally.');
@@ -90,21 +111,13 @@ $(document).ready(function () {
                     emailsArray.push(email);
                     localStorage['emailsArray'] = JSON.stringify(emailsArray);
 
-                    // if (!localStorage['noOfEmailsToSend']) {
-                    //     localStorage['noOfEmailsToSend'] = 0;
-                    // }
-                    // localStorage['emailsToSend.' + localStorage['noOfEmailsToSend'] + '.to'] = $("input[name=to]").val();
-                    // localStorage['emailsToSend.' + localStorage['noOfEmailsToSend'] + '.subject'] = $("input[name=subject]").val();
-                    // localStorage['emailsToSend.' + localStorage['noOfEmailsToSend'] + '.body'] = $("textarea[name=body]").val();
-                    // localStorage['noOfEmailsToSend'] = parseInt(localStorage['noOfEmailsToSend']) + 1;
-
                     buttonPushed('backToMailbox');
                     //this resets the compose mail form for the next email
                     $("input[name=to]").val('');
                     $("input[name=subject]").val('');
                     $("textarea[name=body]").val('');
                 } else {
-                    alert('There was an error sending the email. Browser doesn\'t support HTML5 storage');
+                    alert('There was an error sending the email. Your browser doesn\'t support HTML5 storage.');
                 }
 
                 //try sending the emails every 3 secs till successfully sent. Then delete email from local storage
@@ -118,10 +131,8 @@ $(document).ready(function () {
                             var oldEmailsArray = JSON.parse(localStorage['emailsArray']);
                         }
                         while (oldEmailsArray.length!==0) {
-                            //console.log('oldEmailsArray: ' + JSON.stringify(oldEmailsArray));
                             poppedEmail = oldEmailsArray.shift();
-                            //console.log('oldEmailsArray.length: ' + oldEmailsArray.length);
-                            //console.log('poppedEmail: ' + JSON.stringify(poppedEmail));
+
                             $.ajax({
                                 type: 'POST',
                                 url: '/mail/sendEmail',
@@ -129,21 +140,20 @@ $(document).ready(function () {
                                 async: false,
                                 success: function (data, status) {
                                     if (status === 'success') {
-                                        console.log('Successfully sent offline email. Deleting local storage of email.');                                  
+                                        console.log('Successfully sent offline email. Deleting local storage of email.');
+                                        alert('All the emails you sent while offline have been successfully sent.');                            
                                     }
                                 },
                                 error: function (xhr, textStatus, error) {
-                                    //console.log('push');
                                     newEmailsArray.push(poppedEmail);
                                 }
                             });
                         }
-                        //console.log('newEmailsArray: ' + JSON.stringify(newEmailsArray));
                         localStorage['emailsArray'] = JSON.stringify(newEmailsArray);
                         
                         if (newEmailsArray.length!==0) {
                             //try sending again in another 3 seconds.
-                            console.log('Failed to send offline emails. Will retry in 3 seconds.');
+                            console.log('Failed to send offline emails. Will retry in '+RETRY_SENDING_EMAILS_SEC+' seconds.');
                             sendOfflineEmails();
                         }
                     }, RETRY_SENDING_EMAILS_SEC * 1000);
@@ -173,11 +183,7 @@ $(document).ready(function () {
     });
 });
 
-
 function deleteMail(id) {
-    //alert("here")
-    //$.post('/mail/deleteMail',{id: id}, function (data,status) {
-    alert("here")
     $.post('/mail/deleteMail',{id: id}, function (data, status) {
         if(status === 'success') {
             if('data' === 'FAIL') {
@@ -187,6 +193,8 @@ function deleteMail(id) {
         else {
             window.location.href = "welcome.html";
         }
+    }).fail(function (xhr, textStatus, errorThrown) {
+        alert('Currently offline. Cannot delete emails while offline.');
     });
 }
 
@@ -217,17 +225,32 @@ function replyMail(id) {
     $("input[name=to]").val(mails[id].fromUsername);
 }
 
+function logout() {
+    //alert user about unsent offline emails
+    console.log('logging out.');
+    if (localStorage['emailsArray']) {
+        var emailsArray = JSON.parse(localStorage['emailsArray']);
+        if (emailsArray.length!==0) {
+            var r = confirm('You have ' + emailsArray.length + ' unsent emails that you attempted to send while offline. If you logout, these emails will not be sent and will be deleted.\nAre you sure you wish to log out?');
+            if (r) {
+                completeLogout();
+            }
+        }
+    }
+    completeLogout();
+}
+
+function completeLogout() {
+    localStorage.clear();
+    window.location.href='logout';
+}
+
 function buttonPushed(button, id) {
-    //console.log('button pushed!');
     if (button === 'composeNewEmail') {
         $(".fullScreen").hide();
         $("#composeDialog").show();
     }
     else if (button === 'backToMailbox') {
-        /*
-        document.getElementById("mailList").style.display="block";
-        document.getElementById("composeDialog").style.display="none";
-        */
         box  = 'inbox';
         $("#fromTo").text('From');
         $(".fullScreen").hide();
