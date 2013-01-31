@@ -65,11 +65,14 @@ $(document).ready(function () {
                 }
                 poll();
             }).fail(function (xhr, textStatus, errorThrown) {
+                console.log('failed getting mailList');
                 if (supports_html5_storage()) {
                     if (localStorage['usersEmails.'+box]) {
+                        console.log('box: ' + box);
                         $('#list').html(localStorage['usersEmails.'+box]);
                     }
                 }
+                poll();
             });
         }, REFRESH_RATE_SEC * 1000);
     })();
