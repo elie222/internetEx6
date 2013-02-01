@@ -235,6 +235,7 @@ function replyMail(id) {
     $(".fullScreen").hide();
     $("#composeDialog").show();
     $("input[name=to]").val(mails[id].fromUsername);
+    $("input[name=subject]").val('Re: ' + mails[id].subject);
 }
 
 function logout() {
