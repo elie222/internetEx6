@@ -98,6 +98,15 @@ $(document).ready(function () {
                 }
             },
             error: function (xhr, textStatus, error) {
+                console.log(JSON.stringify(xhr));
+                console.log(JSON.stringify(textStatus));
+                console.log(JSON.stringify(error));
+
+                if (xhr.status===404) {
+                    alert('User does not exist.');
+                    return;
+                }
+
                 alert('There was a problem sending the email because you are offline. We\'ll retry to send the email every ' + RETRY_SENDING_EMAILS_SEC + ' seconds.\nYou will receive an alert when all your offline emails have been successfully sent.');
                 //save emails
                 if (supports_html5_storage) {
