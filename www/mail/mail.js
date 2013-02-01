@@ -70,6 +70,8 @@ $(document).ready(function () {
                     if (localStorage['usersEmails.'+box]) {
                         console.log('box: ' + box);
                         $('#list').html(localStorage['usersEmails.'+box]);
+                    } else {
+                        $('#list').html(localStorage['usersEmails.outbox'] = "<tr><th style=\"width:30px\">"+((box === 'mails')?('From'):('To'))+"</th><th style=\"width:100px\">Arrival Date:</th><th style=\"width:200px\">  Subject</th><th style=\"width:50px\">Actions</th></tr>");
                     }
                 }
                 poll();
