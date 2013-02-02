@@ -29,7 +29,7 @@ $(document).ready(function () {
             if (supports_html5_storage()) {
                 localStorage['loggedInUsername'] = data;
             }
-            $('#userDetails').html('Welcome Back ' + data + '!');//TODO atm data is the username. We can change this to the user's first name.
+            $('#userDetails').html('Welcome Back ' + data + '!');
         } else {
             window.location.href = "welcome.html";
         }
@@ -85,17 +85,24 @@ $(document).ready(function () {
             url: '/mail/sendEmail',
             data: $(this).serialize(),
             success: function (data, status) {
-                if (status === "success") {
+                if (status === "success" && data === "Email successfully sent!") {
                     //alert('Your email has been successfully sent.');//TODO can remove this and just print a message on the mail.html page. alerts are annoying.
                     buttonPushed('backToMailbox');
+                    $("#errorMessage").show();
+                    $("#errorMessage").html(data);
+                    $("#errorMessage").css('background-color','green');
 
-                    //this resets the compose mail form for the next email
-                    $("input[name=to]").val('');
-                    $("input[name=subject]").val('');
-                    $("textarea[name=body]").val('');
-                } else {
-                    alert('There was an error sending the email.\n' + data);
                 }
+                else {
+                    //alert(data);
+                    $("#errorMessage").show();
+                    $("#errorMessage").html(data);
+                    $("#errorMessage").css('background-color','red');
+                }
+                //this resets the compose mail form for the next email
+                $("input[name=to]").val('');
+                $("input[name=subject]").val('');
+                $("textarea[name=body]").val('');
             },
             error: function (xhr, textStatus, error) {
                 console.log(JSON.stringify(xhr));
@@ -103,11 +110,16 @@ $(document).ready(function () {
                 console.log(JSON.stringify(error));
 
                 if (xhr.status===404) {
-                    alert('User does not exist.');
+                    $("#errorMessage").show();
+                    $("#errorMessage").html("User does not exist");
+                    $("#errorMessage").css('background-color','red');
                     return;
                 }
 
-                alert('There was a problem sending the email because you are offline. We\'ll retry to send the email every ' + RETRY_SENDING_EMAILS_SEC + ' seconds.\nYou will receive an alert when all your offline emails have been successfully sent.');
+                $("#errorMessage").show();
+                $("#errorMessage").html('There was a problem sending the email because you are offline. We\'ll retry to send the email every ' + RETRY_SENDING_EMAILS_SEC + ' seconds.\nYou will receive an alert when all your offline emails have been successfully sent.');
+                $("#errorMessage").css('background-color','red');
+                //alert('There was a problem sending the email because you are offline. We\'ll retry to send the email every ' + RETRY_SENDING_EMAILS_SEC + ' seconds.\nYou will receive an alert when all your offline emails have been successfully sent.');
                 //save emails
                 if (supports_html5_storage) {
                     console.log('Storing emails locally.');
@@ -227,15 +239,27 @@ function readMail(id) {
         "</table>" +
     "");
 
+    // convert new line into <br>
+    //alert(mails[id].body);
+    mails[id].body = mails[id].body.replace(/(&#13;)/gm,"<br>");
     $("#mailSubject").html("<div id='subjectContent'>"+mails[id].subject+"</div>");
     $("#mailBody").html("<div id='bodyContent'>"+mails[id].body+"</div>");
+    $("#mailReply").click(function() {
+        replyMail(id);
+    });
 }
 
 function replyMail(id) {
+    var decodedBody = $("<div/>").html(mails[id].body).text();
     $(".fullScreen").hide();
     $("#composeDialog").show();
     $("input[name=to]").val(mails[id].fromUsername);
     $("input[name=subject]").val('Re: ' + mails[id].subject);
+    $("textarea[name=body]").val('\r\n\r\n'+
+        '---------------------------\r\n' +
+        mails[id].from+' originally wrote: \r\n'+
+        '---------------------------\r\n' +
+        decodedBody);
 }
 
 function logout() {
@@ -271,6 +295,7 @@ function deleteAllCookies() {
 }
 
 function buttonPushed(button, id) {
+    $("#errorMessage").hide();
     if (button === 'composeNewEmail') {
         $(".fullScreen").hide();
         $("#composeDialog").show();

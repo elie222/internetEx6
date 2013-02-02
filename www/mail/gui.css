@@ -37,6 +37,7 @@
     display: block;
     width: 80%;
     height: 20%;
+    min-width: 850px;
     /*center align div*/
     margin: 0px auto;
     margin-bottom: 10px;
@@ -48,7 +49,7 @@
 #composeDialog, #showMail
 {
     position: relative;
-    display: block;
+    /*display: block;*/
     width: 80%;
     display: none;
     /*center align div*/
@@ -71,7 +72,7 @@
 {
     position: relative;
     display: block;
-
+    min-width: 850px;
     width: 80%;
     /*center align div*/
     margin: 0px auto;
@@ -129,17 +130,22 @@ textarea.input
 table#list
 {
     width:100%;
+   /* min-width:400px;*/
 /*    margin-left: 50px;
     margin-right: 50px;*/
     /*center align div*/
     margin: 0px auto;
+    /*max-width: 300px;*/
 }
 
 table#list th, table#list td
 {
-
-    /*width:100px;*/
+    width:100px;
     height:20px;
+    text-align: center;
+    min-width: 200px;
+
+
 }
 
 table#list th
@@ -149,7 +155,7 @@ table#list th
 
 table#list td
 {
-    font-family: Verdana;
+    font-family: cursive;
     font-size: 14px;
     color:blue;
 }
@@ -167,6 +173,7 @@ table#list td
     background-color: white;
     color:blue;
     width:70%;
+    height: 20px;
     left:50%;
     margin-left: -35% ;
     padding: 5px;
@@ -182,9 +189,20 @@ table#list td
     width:70%;
     left:50%;
     margin-left: -35% ;
-    height: 350px;
-    top:51%;
-    margin-top: -150px;
+    height: 250px;
+    /*top:51%; */
+    /*margin-top: -150px;*/
+    top: 180px;
     padding: 5px;
     overflow: auto;
+}
+
+.listField
+{
+    margin: auto;
+    overflow: auto;
+
+    text-align: center;
+    max-width:200px;
+
 }

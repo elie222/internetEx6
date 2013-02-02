@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html manifest="/mail/cache.manifest">
-<!-- <html> -->
+<!--<html>-->
 <head>
     <title>Mail Application</title>
     <link rel="stylesheet" type="text/css" href="/mail/stylesheet.css" />
@@ -30,7 +30,7 @@
             <input type="button" class="button" value="Compose New Mail" onclick="buttonPushed('composeNewEmail');"/>
             <input type="button" class="button" style="float:right" value="Logout" onclick="logout();" />
         </div>
-
+        <div id="errorMessage"></div>
         <div id="mailList" class="window fullScreen">
             <table id="list">
                 <tr>
@@ -71,6 +71,9 @@
                 </tr>
                 <tr style="height:300px">
                     <td  style="width:100px" id="mailBody"> </td>
+                </tr>
+                <tr>
+                    <td><input type="button" class="button" id="mailReply" value="Reply"/> </td>
                 </tr>
             </table>
         </div>

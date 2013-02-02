@@ -97,6 +97,7 @@
                         window.location.href = '/mail/mail.html';
                     }
                     else {
+                        $(errorMessage).show();
                         $(errorMessage).text('Error: '+data);
                         $(errorMessage).css('background-color','red');
                     }

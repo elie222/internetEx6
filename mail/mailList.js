@@ -9,8 +9,8 @@ var login = require('./login');
 
 exports.callBack = {call: function (request, response, parameters) {
     var currentUser = login.validate(request,response);
-    //console.log("currentUser: " + currentUser);
-    //console.log('box: ' +parameters['box'] );
+    console.log("currentUser: " + currentUser);
+    console.log('box: ' +parameters['box'] );
     var box = (parameters['box'] === 'inbox') ? 'mails' : 'sent';
    // console.log("In mailList.js. CurrentUser: " + currentUser);
     var mails = null;
@@ -25,15 +25,17 @@ exports.callBack = {call: function (request, response, parameters) {
         response.end('FAIL');
     }
     else {
-        //console.log("here");
-        //mails = request.getPublicMemory().users[currentUser].mails;
+        console.log("here");
+       // mails = request.getPublicMemory().users[currentUser].mails;
+        //console.log("currentUser mails: "+JSON.stringify(request.getPublicMemory().users[currentUser]));
         //console.log("here");
         mails = request.getPublicMemory().users[currentUser][box];
 
         mails.sort(function(a,b) {
             return b.arrivalDate - a.arrivalDate;
         });
-
+        console.log("here2");
+        //console.log(JSON.stringify(mails));
         //console.log("after sort" + mails[0].from);
         for(var mail in mails) {
             //console.log('mails[mail]: ' + JSON.stringify(mails[mail]));
@@ -41,7 +43,7 @@ exports.callBack = {call: function (request, response, parameters) {
             sender.username = request.getPublicMemory().users[mails[mail].from].details.username;
             sender.firstName = request.getPublicMemory().users[mails[mail].from].details.firstName;
             sender.lastName = request.getPublicMemory().users[mails[mail].from].details.lastName;
-            //console.log('request.getPublicMemory().users[mails[mail].to]: ' + JSON.stringify(request.getPublicMemory().users[mails[mail].to]));
+           // console.log('request.getPublicMemory().users[mails[mail].to]: ' + JSON.stringify(request.getPublicMemory().users[mails[mail].to]));
             receiver.firstName = request.getPublicMemory().users[mails[mail].to].details.firstName;
             receiver.lastName = request.getPublicMemory().users[mails[mail].to].details.lastName;
             //console.log(request.getPublicMemory().users[mails[mail].from].details.lastName);
@@ -49,15 +51,15 @@ exports.callBack = {call: function (request, response, parameters) {
 
             output +=
                 "<tr>" +
-                    "<td>"+firstRow.firstName+"   "+firstRow.lastName + "</td>" +
-                    "<td>"+mails[mail].arrivalDate+"</td>" +
-                    "<td>"+ mails[mail].subject+"</td>" +
+                    "<td><div class='listField'></div>"+firstRow.firstName+"   "+firstRow.lastName + "</div></td>" +
+                    "<td>"+mails[mail].arrivalDate.toLocaleString()+"</td>" +
+                    "<td><div class='listField'> "+ mails[mail].subject+"</div></td>" +
                     "<td>" +
                         "<script type='text/javascript'>window.mails["+mail+"] = {"+
                             "fromUsername: '" + sender.username + "'," +
                             "from: '" + sender.firstName+" " + sender.lastName + "'," +
                             "to: '" + receiver.firstName+" " + receiver.lastName +"'," +
-                            "arrivalDate: '" + mails[mail].arrivalDate + "'," +
+                            "arrivalDate: '" + mails[mail].arrivalDate.toLocaleString() + "'," +
                             "subject: '" + mails[mail].subject + "'," +
                             "body: '" + mails[mail].body + "'" +
                         "};" +

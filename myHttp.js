@@ -497,7 +497,7 @@ function createHTTPServer(pResourceMap, pRootFolder) {
 
                 /* responds to a request */
                 function respond(parsedData, callback) {
-                    console.log('responding... socketId: ' + socketId);
+                    console.log('responding... socketId: ' + socketId + ' requestUri: '+parsedData.RequestURI);
 
                     var userCallBack = null;
                     var request = null;
