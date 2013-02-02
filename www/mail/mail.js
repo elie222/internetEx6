@@ -1,18 +1,10 @@
-/**
- * Created with JetBrains WebStorm.
- * User: LEO
- * Date: 20/01/13
- * Time: 16:06
- * To change this template use File | Settings | File Templates.
- */
-
 //note: localStorage['emailsArray'] are the user's unsent offline emails.
 //      localStorage['usersEmails.inbox'] is the user's received emails.
 //      localStorage['usersEmails.outbox'] is the user's sent emails.
 //      localStorage['loggedInUsername'] is the username of the logged in person. 
 
 var box = 'inbox';
-var REFRESH_RATE_SEC = 1;// TODO: use settings.js or something...
+var REFRESH_RATE_SEC = 1;
 var RETRY_SENDING_EMAILS_SEC = 3;
 
 function supports_html5_storage() {
@@ -46,8 +38,6 @@ $(document).ready(function () {
 
     (function poll() {
         setTimeout(function () {
-            console.log('poll');
-           // $.post('/mail/mailList', {}, function (data, status) {
             $.post('/mail/mailList/'+box, {}, function (data, status) {
                 if(status === "success") {
                     if(data === "FAIL") {
@@ -88,7 +78,6 @@ $(document).ready(function () {
             data: $(this).serialize(),
             success: function (data, status) {
                 if (status === "success" && data === "Email successfully sent!") {
-                    //alert('Your email has been successfully sent.');//TODO can remove this and just print a message on the mail.html page. alerts are annoying.
                     buttonPushed('backToMailbox');
                     $("#errorMessage").show();
                     $("#errorMessage").html(data);
@@ -96,7 +85,6 @@ $(document).ready(function () {
 
                 }
                 else {
-                    //alert(data);
                     $("#errorMessage").show();
                     $("#errorMessage").html(data);
                     $("#errorMessage").css('background-color','red');
@@ -107,9 +95,9 @@ $(document).ready(function () {
                 $("textarea[name=body]").val('');
             },
             error: function (xhr, textStatus, error) {
-                console.log(JSON.stringify(xhr));
-                console.log(JSON.stringify(textStatus));
-                console.log(JSON.stringify(error));
+                // console.log(JSON.stringify(xhr));
+                // console.log(JSON.stringify(textStatus));
+                // console.log(JSON.stringify(error));
 
                 if (xhr.status===404) {
                     $("#errorMessage").show();
@@ -121,7 +109,7 @@ $(document).ready(function () {
                 $("#errorMessage").show();
                 $("#errorMessage").html('There was a problem sending the email because you are offline. We\'ll retry to send the email every ' + RETRY_SENDING_EMAILS_SEC + ' seconds.\nYou will receive an alert when all your offline emails have been successfully sent.');
                 $("#errorMessage").css('background-color','red');
-                //alert('There was a problem sending the email because you are offline. We\'ll retry to send the email every ' + RETRY_SENDING_EMAILS_SEC + ' seconds.\nYou will receive an alert when all your offline emails have been successfully sent.');
+
                 //save emails
                 if (supports_html5_storage) {
                     console.log('Storing emails locally.');
@@ -273,6 +261,8 @@ function logout() {
             var r = confirm('You have ' + emailsArray.length + ' unsent emails that you attempted to send while offline. If you logout, these emails will not be sent and will be deleted.\nAre you sure you wish to log out?');
             if (r) {
                 completeLogout();
+            } else {
+                return;
             }
         }
     }

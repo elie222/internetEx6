@@ -20,7 +20,4 @@ exports.validateUser = function (request,response,parameters) {
     if(currentSession !== request.getPublicMemory().users[loginCookie].lastLoginSession) return null;
 
     return currentSession;
-
-
-
 };

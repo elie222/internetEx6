@@ -497,7 +497,7 @@ function createHTTPServer(pResourceMap, pRootFolder) {
 
                 /* responds to a request */
                 function respond(parsedData, callback) {
-                    console.log('responding... socketId: ' + socketId + ' requestUri: '+parsedData.RequestURI);
+                    //console.log('responding... socketId: ' + socketId + ' requestUri: '+parsedData.RequestURI);
 
                     var userCallBack = null;
                     var request = null;
@@ -622,7 +622,7 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                     requestedFile = (!resourceMap[parsedData.RequestURI]) ? parsedData.RequestURI : resourceMap[parsedData.RequestURI];
                     requestedFile = path.normalize(requestedFile);
 
-                    console.log('requestedFile is: ' + requestedFile);
+                    //console.log('requestedFile is: ' + requestedFile);
 
                     if (requestedFile[0] !== path.sep) {
                         requestedFile =path.normalize('/' + requestedFile);
@@ -746,81 +746,6 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                 }
 
                 /* outputs a file to the client browser */
-                // function writeFileWithoutPipe(fileLocation, contentType, fileSize, callback) {
-                //     var readStream = fs.createReadStream(fileLocation);
-                //     readStream.setEncoding();
-                //     var bodyContent = '';
-
-                //     // ReadStream event handlers //
-                //     function onStreamData(data) {
-                //         console.log(data);
-                //         bodyContent += data;
-                //     }
-
-                //     function onStreamEnd() {
-                //         if (!socket.writable) {
-                //             isKeepAlive = false;
-                //             cleanUpAndClose();
-                //             return;
-                //         }
-                //         console.log('Read a total of ' + fileSize + ' bytes from ' + fileLocation + '\n');
-                //         //socket.write('\r\n');
-
-                //         var headers  = buildDefaultHeaders();
-
-                //         var content = 'HTTP/1.1 200 OK\r\n';
-                //         if (!socket.writable) {
-                //             isKeepAlive = false;
-                //             cleanUpAndClose();
-                //             return;
-                //         }
-
-                //         numOfSuccessfulRequests++;
-
-                //         headers['Content-Type'] = contentType;
-                //         if (!headers['Host'])
-                //             headers['Host'] = socket.address().address;
-
-                //         for (var header in headers)
-                //             if (headers.hasOwnProperty(header) && headers[header])
-                //                 content += header + ': ' + headers[header] + '\r\n';
-
-                //         content += 'Content-Length: '+ bodyContent.length + '\r\n';
-
-                //         //console.log('response content:\n' + content);
-
-                //         //console.log('Content: ' + content);
-
-                //         socket.write(content);
-                //         socket.write(bodyContent);
-                //         cleanUpAndClose();
-                //         if (callback)
-                //             callback();
-                //     }
-
-                //     function onStreamClose() {
-                //         //console.log('File ' + fileLocation +' is closed.\n');
-                //     }
-
-                //     function onStreamError() {
-                //         console.log('Error reading the file... \n');
-                //         readStream.destroy();
-                //         reportError(500,"Unable to open file",callback);
-                //     }
-
-                //     function onStreamOpen() {
-                //         //console.log('Opening the file...\n');
-                //     }
-                //     // add event listeners
-                //     readStream.on('open',onStreamOpen);
-                //     readStream.on('data',onStreamData);
-                //     readStream.on('end',onStreamEnd);
-                //     readStream.on('close',onStreamClose);
-                //     readStream.on('error',onStreamError);
-                // }
-
-
-                /* outputs a file to the client browser */
                 function writeFile(fileLocation, contentType, fileSize, callback) {
                     var readStream = fs.createReadStream(fileLocation);
                     // ReadStream event handlers //
@@ -835,7 +760,7 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                             cleanUpAndClose();
                             return;
                         }
-                        console.log('Read a total of ' + fileSize + ' bytes from ' + fileLocation + '\n');
+                        //console.log('Read a total of ' + fileSize + ' bytes from ' + fileLocation + '\n');
                         //socket.write('\r\n');
                         cleanUpAndClose();
                         if (callback)
@@ -863,14 +788,14 @@ function createHTTPServer(pResourceMap, pRootFolder) {
                     readStream.on('error',onStreamError);
 
                     writeHeader(200,'OK',contentType,fileSize, buildDefaultHeaders(), function () {
-                        console.log('writeHeader callback');
+                        //console.log('writeHeader callback');
                         if (!socket.writable) {
                             isKeepAlive = false;
                             cleanUpAndClose();
                             return;
                         }
-                        console.log('contentType: ' + contentType);
-                        console.log('contentType: ' + fileSize);
+                        //console.log('contentType: ' + contentType);
+                        //console.log('contentType: ' + fileSize);
                         socket.write('\r\n', function() {
                             readStream.pipe(socket,{end:false});
                         });

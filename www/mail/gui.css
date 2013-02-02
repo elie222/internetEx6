@@ -1,35 +1,7 @@
 #container
 {
-/*    position: absolute;
-    top:30%;
-    left:50%;
-
-    width:50%;
-    height:50%;
-
-    margin-left: -512px;
-    margin-top: -240px;
-
-    padding: 0px;
-
-    border-width: 1px;
-    border-style: groove;;*/
     min-width: 700px;
 }
-
-/*#mainWindow
-{*/
-   /* position: absolute;
-    top:50%;
-    left:50%;
-    */
-/*    width:100%;
-    height:100%;*/
-    /*
-    margin-left: -512px;
-    margin-top: -360px;
-    */
-/*}*/
 
 #toolbar
 {
@@ -38,7 +10,6 @@
     width: 80%;
     height: 20%;
     min-width: 850px;
-    /*center align div*/
     margin: 0px auto;
     margin-bottom: 10px;
 
@@ -49,10 +20,8 @@
 #composeDialog, #showMail
 {
     position: relative;
-    /*display: block;*/
     width: 80%;
     display: none;
-    /*center align div*/
     margin: 0px auto;
     margin-bottom: 10px;
 }
@@ -63,7 +32,6 @@
     display: block;
     width: 80%;
     height: 20%;
-    /*center align div*/
     margin: 0px auto;
     margin-bottom: 10px;
 }
@@ -74,7 +42,6 @@
     display: block;
     min-width: 850px;
     width: 80%;
-    /*center align div*/
     margin: 0px auto;
     margin-bottom: 10px;
 
@@ -91,20 +58,10 @@ table.input
 
     width:80%;
     height:400px;
-
-    /*min-width:400px;*/
-
-/*    margin-left:90px;
-    margin-right:90px;
-    margin-top:25px;*/
-
-    /*center align div*/
     margin: 0px auto;
-
     border-color: orange;
     border-style: double;
     border-width: 5px;
-
     padding: 10px;
     background-color: #236dff;
 }
@@ -130,12 +87,7 @@ textarea.input
 table#list
 {
     width:100%;
-   /* min-width:400px;*/
-/*    margin-left: 50px;
-    margin-right: 50px;*/
-    /*center align div*/
     margin: 0px auto;
-    /*max-width: 300px;*/
 }
 
 table#list th, table#list td
@@ -144,8 +96,6 @@ table#list th, table#list td
     height:20px;
     text-align: center;
     min-width: 200px;
-
-
 }
 
 table#list th
@@ -190,8 +140,6 @@ table#list td
     left:50%;
     margin-left: -35% ;
     height: 250px;
-    /*top:51%; */
-    /*margin-top: -150px;*/
     top: 180px;
     padding: 5px;
     overflow: auto;
@@ -201,7 +149,6 @@ table#list td
 {
     margin: auto;
     overflow: auto;
-
     text-align: center;
     max-width:200px;
 

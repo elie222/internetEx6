@@ -54,18 +54,13 @@ body
     padding: 0px;
 }
 
-.navigation
-{
-/*    position: relative;
-    bottom: 5px;*/
-}
-
 #errorMessage
 {
     display: none;
     max-width: 900px;
     margin:auto;
     background-color: #50baff;
+    margin-bottom: 10px;
 }
 
 .caption
